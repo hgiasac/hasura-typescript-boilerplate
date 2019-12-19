@@ -1,0 +1,80 @@
+version: "3.7"
+
+# yaml refs
+x-refs:
+  common_config: &common_config
+    restart: always
+    env_file:
+    - .env
+
+services:
+
+  postgres:
+    restart: always
+    image: postgres:12
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    ports:
+    - "5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  auth:
+    <<: *common_config
+    build: 
+      context: ./services/auth
+      dockerfile: Dockerfile_dev
+      network: host
+    ports:
+    - "9000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./services/auth:/usr/src/app
+
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
+      DATA_HOST: http://data:8080
+
+  data:
+    <<: *common_config
+    image: hasura/graphql-engine:v1.0.0-rc.1.cli-migrations
+    volumes:
+      - ./services/data/migrations:/migrations
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth
+      - postgres
+      - events
+    volumes:
+      - ./services/events:/usr/src/app/events
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_MIGRATIONS_DIR: "/migrations"
+      EVENT_TRIGGER_URL: http://events:9000/events
+      REMOTE_SCHEMA_URL: http://events:9000/graphql
+      HASURA_GRAPHQL_AUTH_HOOK: http://auth:9000/verify
+      
+  events:
+    <<: *common_config
+    build: 
+      context: ./services/events
+      dockerfile: Dockerfile_dev
+      network: host
+    ports:
+    - "9000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./services/events:/usr/src/app
+
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
+      DATA_HOST: http://data:8080
+
+volumes:
+  db_data:

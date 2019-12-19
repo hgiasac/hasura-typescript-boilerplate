@@ -1,0 +1,15 @@
+FROM node:alpine
+
+RUN apk add git g++ make python
+
+# Create app directory
+WORKDIR /usr/src/app
+
+RUN npm config set unsafe-perm true 
+RUN apk update && apk add nodejs 
+RUN npm i -g nodemon typescript @types/node eslint eslint-plugin-import ts-node
+
+
+EXPOSE 9000
+
+CMD ["nodemon"]

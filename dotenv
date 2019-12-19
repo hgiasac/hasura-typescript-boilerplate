@@ -1,0 +1,15 @@
+ROOT_DOMAIN=localhost
+HASURA_GRAPHQL_ADMIN_SECRET=hasura
+# Accepts from all domain
+HASURA_GRAPHQL_CORS_DOMAIN="*"
+
+# Postgres
+POSTGRES_HOST=postgres
+POSTGRES_USER=postgres
+POSTGRES_DB=postgres
+POSTGRES_PASSWORD=postgres
+
+# base64 encoded random string
+COOKIE_KEY=inputcookiesecrethere
+# base64 encoded random string
+SESSION_KEY=inputsessionsecrethere
