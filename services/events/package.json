@@ -4,10 +4,10 @@
   "description": "remote schema and event trigger service",
   "main": "lib/index.js",
   "dependencies": {
-    "apollo-server-express": "^2.9.13"  
+    "apollo-server-express": "^2.9.15"  
   },
   "devDependencies": {
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^24.0.25",
     "@types/supertest": "^2.0.8",
     "jest": "^24.9.0",
     "supertest": "^4.0.2",
@@ -16,7 +16,7 @@
     "tslint": "^5.20.1",
     "tslint-consistent-codestyle": "^1.16.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.4"
   },
   "scripts": {
     "build": "npm run clean && tsc",
