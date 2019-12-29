@@ -40,7 +40,7 @@ services:
 
   data:
     <<: *common_config
-    image: hasura/graphql-engine:v1.0.0-rc.1.cli-migrations
+    image: hasura/graphql-engine:v1.0.0.cli-migrations
     volumes:
       - ./services/data/migrations:/migrations
     ports:

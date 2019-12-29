@@ -1,3 +1,6 @@
+import { Request } from "express";
+import { XHasuraRole, XHasuraUserID } from "../types";
+
 export function rangeScalaNames(name: string, length: number): string {
   let result = "";
 
@@ -6,4 +9,12 @@ export function rangeScalaNames(name: string, length: number): string {
   }
 
   return result;
+}
+
+export function getCtxUserID(req: Request): string {
+  return req.get(XHasuraUserID);
+}
+
+export function getCtxUserRole(req: Request): string {
+  return req.get(XHasuraRole);
 }

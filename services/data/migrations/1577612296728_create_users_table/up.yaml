@@ -1,0 +1,54 @@
+- args:
+    is_enum: false
+    name: users
+    schema: public
+  type: track_table
+- args:
+    permission:
+      allow_aggregations: true
+      columns:
+      - id
+      - email
+      - password
+      - fullName
+      - role
+      - createdAt
+      - updatedAt
+      - status
+      - createdBy
+      - updatedBy
+      filter: {}
+      limit: null
+    role: user
+    table:
+      name: users
+      schema: public
+  type: create_select_permission
+- args:
+    permission:
+      columns:
+      - email
+      - fullName
+      - role
+      - status
+      filter: {}
+      localPresets:
+      - key: updatedBy
+        value: x-hasura-User-Id
+      - key: ""
+        value: ""
+      set:
+        updatedBy: x-hasura-User-Id
+    role: user
+    table:
+      name: users
+      schema: public
+  type: create_update_permission
+- args:
+    permission:
+      filter: {}
+    role: user
+    table:
+      name: users
+      schema: public
+  type: create_delete_permission

@@ -13,3 +13,5 @@ POSTGRES_PASSWORD=postgres
 COOKIE_KEY=inputcookiesecrethere
 # base64 encoded random string
 SESSION_KEY=inputsessionsecrethere
+SESSION_EXPIRY=30d
+PASSWORD_SALT=10
