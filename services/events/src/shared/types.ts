@@ -12,7 +12,7 @@ export enum Status {
   Deleted = "deleted",
 }
 
-export const AuthenticationHeader = "authentication";
+export const AuthorizationHeader = "Authorization";
 export const XHasuraAdminSecret = "X-Hasura-Admin-Secret";
 export const XHasuraRole = "X-Hasura-Role";
 export const XHasuraUserID = "X-Hasura-User-Id";
