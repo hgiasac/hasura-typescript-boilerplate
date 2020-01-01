@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { JwtAuth } from "../shared/auth/jwt";
-import { AuthenticationHeader, Role, Status, XHasuraRole, XHasuraUserID } from "../shared/types";
+import { AuthorizationHeader, Role, Status, XHasuraRole, XHasuraUserID } from "../shared/types";
 
 export async function authenticationHandler(req: Request, res: Response) {
 
-  const token = req.get(AuthenticationHeader);
+  const token = req.get(AuthorizationHeader);
   const anonymous = {
     [XHasuraRole]: Role.Anonymous.toLowerCase(),
   };
