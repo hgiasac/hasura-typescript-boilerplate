@@ -17,3 +17,6 @@ FOR EACH ROW
 EXECUTE PROCEDURE "public"."set_current_timestamp_updatedAt"();
 COMMENT ON TRIGGER "set_public_users_updatedAt" ON "public"."users" 
 IS 'trigger to set value of column "updatedAt" to current timestamp on row update';
+-- get profile
+CREATE VIEW "public"."me" AS 
+  SELECT * FROM "public"."users";

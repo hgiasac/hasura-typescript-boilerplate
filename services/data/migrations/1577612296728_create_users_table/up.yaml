@@ -4,6 +4,11 @@
     schema: public
   type: track_table
 - args:
+    is_enum: false
+    name: me
+    schema: public
+  type: add_existing_table_or_view
+- args:
     permission:
       allow_aggregations: true
       columns:
@@ -52,3 +57,26 @@
       name: users
       schema: public
   type: create_delete_permission
+- args:
+    permission:
+      allow_aggregations: true
+      columns:
+      - id
+      - email
+      - password
+      - fullName
+      - role
+      - createdAt
+      - updatedAt
+      - status
+      - createdBy
+      - updatedBy
+      filter:
+        id:
+          _eq: x-hasura-User-Id
+      limit: null
+    role: user
+    table:
+      name: me
+      schema: public
+  type: create_select_permission

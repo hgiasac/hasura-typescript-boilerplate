@@ -16,6 +16,3 @@
       name: users
       schema: public
   type: drop_select_permission
-- args:
-    sql: DROP TABLE "public"."users"
-  type: run_sql
