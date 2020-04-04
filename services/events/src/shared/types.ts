@@ -98,7 +98,9 @@ export interface IHasuraEventTriggerPayload<
 // action handler interface
 // https://hasura.io/docs/1.0/graphql/manual/actions/action-handlers.html#action-handlers
 export interface IHasuraActionPayload<A = string, T = IAnyObject, S = SessionVariables> {
-  action: A;
+  action: {
+    name: A;
+  };
   session_variables: S;
   input: T;
 }

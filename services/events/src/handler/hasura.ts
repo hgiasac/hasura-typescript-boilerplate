@@ -43,12 +43,16 @@ export const eventHandler: Handler = (req, res) => {
 export const actionHandler: Handler = (req, res) => {
   const body = <ActionPayload> req.body;
 
-  if (!body || !body.action) {
+  if (config.debug) {
+    console.log("Execute action. Payload", body);
+  }
+
+  if (!body || !body.action || !body.action.name) {
     return res.status(400)
       .json({ message: "Empty action name" });
   }
 
-  const ev = actions[body.action];
+  const ev = actions[body.action.name];
 
   if (!ev) {
     return res.status(400)
