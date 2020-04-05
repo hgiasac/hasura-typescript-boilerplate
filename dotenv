@@ -1,7 +1,7 @@
 ROOT_DOMAIN=localhost
 HASURA_GRAPHQL_ADMIN_SECRET=hasura
 # Accepts from all domain
-HASURA_GRAPHQL_CORS_DOMAIN="*"
+#HASURA_GRAPHQL_CORS_DOMAIN="*"
 
 # Postgres
 POSTGRES_HOST=postgres

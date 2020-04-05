@@ -50,8 +50,6 @@ services:
       - auth
       - postgres
       - events
-    volumes:
-      - ./services/events:/usr/src/app/events
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"

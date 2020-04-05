@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@types/body-parser": "^1.19.0",
+    "@types/node": "^13.11.0",
     "apollo-server-express": "^2.11.0",
     "body-parser": "^1.19.0"
   },
