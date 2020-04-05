@@ -2,14 +2,14 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { PASSWORD_SALT, SESSION_EXPIRY, SESSION_KEY } from "../env";
 import { requestGQL } from "../http-client";
-import { Role, Status } from "../types";
+import { HasuraRole, Status } from "../types";
 import { UnauthorizedError } from "./types";
 
 export interface ICreateUserInput {
   email: string;
   fullName: string;
   password: string;
-  role: Role;
+  role: HasuraRole;
   createdBy: string;
   updatedBy: string;
 }

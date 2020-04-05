@@ -1,8 +1,0 @@
-- args:
-    definition:
-      forward_client_headers: true
-      headers: []
-      timeout_seconds: 60
-      url_from_env: REMOTE_SCHEMA_URL
-    name: events
-  type: add_remote_schema
