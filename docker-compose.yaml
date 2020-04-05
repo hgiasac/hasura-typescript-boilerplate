@@ -40,21 +40,21 @@ services:
 
   data:
     <<: *common_config
-    image: hasura/graphql-engine:v1.2.0-beta.3.cli-migrations
+    image: hasura/graphql-engine:v1.2.0-beta.3.cli-migrations-v2
     volumes:
-      - ./services/data/migrations:/migrations
+      - ./services/data/migrations:/hasura-migrations
+      - ./services/data/metadata:/hasura-metadata
     ports:
       - "8080:8080"
     depends_on:
       - auth
       - postgres
       - events
-    volumes:
-      - ./services/events:/usr/src/app/events
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_MIGRATIONS_DIR: "/migrations"
+      HASURA_GRAPHQL_MIGRATIONS_DIR: "/hasura-migrations"
+      HASURA_GRAPHQL_METADATA_DIR: "/hasura-metadata"
       EVENT_TRIGGER_URL: http://events:9000/events
       REMOTE_SCHEMA_URL: http://events:9000/graphql
       ACTION_URL: http://events:9000/actions

@@ -3,7 +3,8 @@ import actions from "../actions";
 import { ActionPayload } from "../actions/types";
 import events from "../events";
 import { EventTriggerPayload } from "../events/types";
-import config from "../shared/config";
+import * as env from "../shared/env";
+import { logger } from "../shared/logger";
 
 export const eventHandler: Handler = (req, res) => {
   const body = <EventTriggerPayload> req.body;
@@ -27,10 +28,8 @@ export const eventHandler: Handler = (req, res) => {
     .then((result) => res.status(200).json(result))
     .catch((err) => {
 
-      if (config.debug) {
-        console.error("executed trigger failed. Payload", body);
-        console.error(err);
-      }
+      logger.error("executed trigger failed: ", err);
+      logger.debug("Payload", body)
 
       return res.status(400)
         .json({
@@ -43,7 +42,7 @@ export const eventHandler: Handler = (req, res) => {
 export const actionHandler: Handler = (req, res) => {
   const body = <ActionPayload> req.body;
 
-  if (config.debug) {
+  if (env.DEBUG) {
     console.log("Execute action. Payload", body);
   }
 
@@ -66,10 +65,8 @@ export const actionHandler: Handler = (req, res) => {
     .then((result) => res.status(200).json(result))
     .catch((err) => {
 
-      if (config.debug) {
-        console.error("Executed action failed. Payload", body);
-        console.error(err);
-      }
+      logger.error("Executed action failed: ", err);
+      logger.debug("Payload", body)
 
       return res.status(400)
         .json({
