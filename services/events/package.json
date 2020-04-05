@@ -10,6 +10,7 @@
     "bcrypt": "^4.0.1",
     "jsonwebtoken": "^8.5.1",
     "@types/body-parser": "^1.19.0",
+    "@types/node": "^13.11.0",
     "apollo-server-express": "^2.11.0",
     "body-parser": "^1.19.0"
   },
