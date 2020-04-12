@@ -4,6 +4,7 @@
   "description": "remote schema and event trigger service",
   "main": "lib/index.js",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.19.0",
     "@types/hapi__joi": "^16.0.12",

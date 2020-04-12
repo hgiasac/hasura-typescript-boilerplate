@@ -5,6 +5,12 @@ import events from "../events";
 import { EventTriggerPayload } from "../events/types";
 import * as env from "../shared/env";
 import { logger, LOG_LEVEL_WARN } from "../shared/logger";
+import {
+  HASURA_ACTION_ERROR_STATUS,
+  HASURA_ACTION_SUCCESS_STATUS,
+  HASURA_EVENT_TRIGGER_ERROR_STATUS,
+  HASURA_EVENT_TRIGGER_SUCCESS_STATUS
+} from "../shared/types";
 
 export const eventHandler: Handler = (req, res) => {
   const body = req.body as EventTriggerPayload;
@@ -21,7 +27,7 @@ export const eventHandler: Handler = (req, res) => {
       level: LOG_LEVEL_WARN,
       ...serializeTriggerRequest(req),
       message: error.message,
-      http_code: 400,
+      http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS,
     });
 
     return res.status(400)
@@ -40,10 +46,10 @@ export const eventHandler: Handler = (req, res) => {
       message: error.message,
       level: LOG_LEVEL_WARN,
       ...serializeTriggerRequest(req),
-      http_code: 400,
+      http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS,
     });
 
-    return res.status(400)
+    return res.status(HASURA_EVENT_TRIGGER_ERROR_STATUS)
       .json(error);
 
   }
@@ -54,20 +60,21 @@ export const eventHandler: Handler = (req, res) => {
       childLogger.info(`executed trigger ${body.trigger.name} successfully`, {
         ...serializeTriggerRequest(req),
         response: env.DEBUG ? result : undefined,
-        http_code: 200,
+        http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS,
       });
 
-      return res.status(200).json(result);
+      return res.status(HASURA_EVENT_TRIGGER_SUCCESS_STATUS)
+        .json(result);
     })
     .catch((err) => {
 
       logger.error(err.message, {
         ...serializeTriggerRequest(req),
         error: err,
-        http_code: 400,
+        http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS,
       });
 
-      return res.status(400)
+      return res.status(HASURA_EVENT_TRIGGER_ERROR_STATUS)
         .json({
           code: err.code,
           message: err.message
@@ -89,10 +96,10 @@ export const actionHandler: Handler = (req, res) => {
       error,
       payload: req.body,
       request_headers: req.headers,
-      http_code: 400,
+      http_code: HASURA_ACTION_ERROR_STATUS,
     });
 
-    return res.status(400)
+    return res.status(HASURA_ACTION_ERROR_STATUS)
       .json(error);
   }
 
@@ -107,10 +114,10 @@ export const actionHandler: Handler = (req, res) => {
     childLogger.warn(error.message, {
       ...serializeActionRequest(req),
       error,
-      http_code: 400,
+      http_code: HASURA_ACTION_ERROR_STATUS,
     });
 
-    return res.status(400)
+    return res.status(HASURA_ACTION_ERROR_STATUS)
       .json(error);
 
   }
@@ -121,19 +128,19 @@ export const actionHandler: Handler = (req, res) => {
       childLogger.info(`executed ${body.action.name} successfully`, {
         ...serializeActionRequest(req),
         response: env.DEBUG ? result : undefined,
-        http_code: 200,
+        http_code: HASURA_ACTION_SUCCESS_STATUS,
       });
 
-      return res.status(200).json(result);
+      return res.status(HASURA_ACTION_SUCCESS_STATUS).json(result);
     })
     .catch((err) => {
       logger.error(err.message, {
         ...serializeActionRequest(req),
         error: err,
-        http_code: 400,
+        http_code: HASURA_ACTION_ERROR_STATUS,
       });
 
-      return res.status(400)
+      return res.status(HASURA_ACTION_ERROR_STATUS)
         .json({
           code: err.code,
           message: err.message

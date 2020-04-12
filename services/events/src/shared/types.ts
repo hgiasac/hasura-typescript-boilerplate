@@ -143,14 +143,22 @@ export interface IHasuraActionErrorResponse {
 export class HasuraActionError extends Error implements IHasuraActionErrorResponse {
 
   public code?: string;
+  public message: string;
+  public details?: any;
 
-  constructor({ message, code }: IHasuraActionErrorResponse) {
+  constructor(
+    { message, code, details }: IHasuraActionErrorResponse
+      & { details?: any }) {
     super(message);
     this.message = message;
     this.code = code;
+    this.details = details;
   }
 
 }
 
 export const HASURA_ACTION_SUCCESS_STATUS = 200;
 export const HASURA_ACTION_ERROR_STATUS = 400;
+
+export const HASURA_EVENT_TRIGGER_SUCCESS_STATUS = 200;
+export const HASURA_EVENT_TRIGGER_ERROR_STATUS = 400;
