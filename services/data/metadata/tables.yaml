@@ -1,1 +1,103 @@
-[]
+- table:
+    schema: public
+    name: me
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - created_by
+      - email
+      - first_name
+      - id
+      - last_name
+      - role
+      - status
+      - updated_at
+      - updated_by
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - first_name
+      - last_name
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+      set:
+        updated_by: x-hasura-User-Id
+- table:
+    schema: public
+    name: roles
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - role_name
+      filter: {}
+      allow_aggregations: true
+- table:
+    schema: public
+    name: status
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      - description
+      filter: {}
+      allow_aggregations: true
+- table:
+    schema: public
+    name: users
+  object_relationships:
+  - name: created_user
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: users
+        column_mapping:
+          created_by: id
+  - name: updated_user
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: users
+        column_mapping:
+          updated_by: id
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      - email
+      - password
+      - first_name
+      - last_name
+      - role
+      - created_at
+      - updated_at
+      - created_by
+      - updated_by
+      - status
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - email
+      - first_name
+      - last_name
+      - role
+      - status
+      filter: {}
+      check: null
+      set:
+        updated_by: x-hasura-User-Id

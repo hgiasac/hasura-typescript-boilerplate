@@ -1,2 +1,0 @@
-CREATE VIEW me AS
-    SELECT * FROM users;

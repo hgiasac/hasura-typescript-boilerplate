@@ -2,16 +2,18 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { PASSWORD_SALT, SESSION_EXPIRY, SESSION_KEY } from "../env";
 import { requestGQL } from "../http-client";
-import { HasuraRole, Status } from "../types";
+import { HasuraRole, Status, STATUS_ACTIVE } from "../types";
 import { UnauthorizedError } from "./types";
 
 export interface ICreateUserInput {
   email: string;
-  fullName: string;
+  first_name: string;
+  last_name: string;
   password: string;
   role: HasuraRole;
-  createdBy: string;
-  updatedBy: string;
+  created_by: string;
+  updated_by: string;
+  status: Status;
 }
 
 export interface ILoginInput {
@@ -21,7 +23,8 @@ export interface ILoginInput {
 
 export interface IAuthUser extends ICreateUserInput {
   id: string;
-  status: string;
+  created_at: string;
+  updated_at: string;
 }
 
 type CreateUserFunc = (input: ICreateUserInput) => Promise<IAuthUser>;
@@ -48,12 +51,6 @@ const createUser: CreateUserFunc = async (input) => {
         affected_rows
         returning {
           id
-          fullName
-          email
-          role
-          createdAt
-          createdBy
-          status
         }
       }
     }
@@ -80,11 +77,11 @@ const encodeToken: EncodeTokenFunc = (user) =>
 const verifyToken: VerifyTokenFunc = async (token) => {
   const result = jwt.verify(token, SESSION_KEY);
 
-  if (typeof result !== "object" || Array.isArray(result) || !(<any> result).id) {
+  if (typeof result !== "object" || Array.isArray(result) || !(result as any).id) {
     throw new Error("invalid token");
   }
 
-  return <any> result;
+  return result as any;
 };
 
 const login: LoginFunc = async (input) => {
@@ -95,15 +92,14 @@ const login: LoginFunc = async (input) => {
         email: { _eq: $email }
       }) {
         id
-        fullName
         email
+        first_name
+        last_name
         password
         role
-        createdAt
-        createdBy
-        updatedAt
-        updatedBy
         status
+        updated_at
+        created_at
       }
     }
   `;
@@ -124,7 +120,7 @@ const login: LoginFunc = async (input) => {
     throw new UnauthorizedError("Wrong password");
   }
 
-  if (user.status !== Status.Active) {
+  if (user.status !== STATUS_ACTIVE) {
     throw new UnauthorizedError("User is " + user.status);
   }
 

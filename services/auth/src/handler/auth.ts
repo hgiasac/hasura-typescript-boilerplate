@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { JwtAuth } from "../shared/auth/jwt";
-import { AuthorizationHeader, Role, Status, XHasuraRole, XHasuraUserID } from "../shared/types";
+import { AuthorizationHeader, HASURA_ROLE_ANONYMOUS, STATUS_ACTIVE, XHasuraRole, XHasuraUserID } from "../shared/types";
 
 export async function authenticationHandler(req: Request, res: Response) {
 
   const token = req.get(AuthorizationHeader);
   const anonymous = {
-    [XHasuraRole]: Role.Anonymous.toLowerCase(),
+    [XHasuraRole]: HASURA_ROLE_ANONYMOUS,
   };
 
   // TODO: verify token
@@ -22,7 +22,7 @@ export async function authenticationHandler(req: Request, res: Response) {
       throw new Error("user not found");
     }
 
-    if (user.status !== Status.Active) {
+    if (user.status !== STATUS_ACTIVE) {
       throw new Error("user is " + user.status);
     }
 

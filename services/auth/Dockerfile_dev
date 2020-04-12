@@ -4,9 +4,11 @@ RUN apk add git g++ make python
 
 # Create app directory
 WORKDIR /usr/src/app
+COPY package.json package-lock.json tsconfig.json tslint.json ./
 
 RUN npm i -g nodemon typescript @types/node eslint eslint-plugin-import ts-node
-
+RUN npm config set unsafe-perm true 
+RUN npm install 
 
 EXPOSE 9000
 

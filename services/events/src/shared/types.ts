@@ -1,11 +1,5 @@
 import { Request } from "express";
 
-export enum Status {
-  Inactive = "inactive",
-  Active = "active",
-  Deleted = "deleted",
-}
-
 export const AuthorizationHeader = "authorization";
 export const XHasuraAdminSecret = "x-hasura-admin-secret";
 export const XHasuraRole = "x-hasura-role";
@@ -16,10 +10,33 @@ export const ContentTypeJson = "application/json";
 export const HASURA_ROLE_ADMIN = "admin";
 export const HASURA_ROLE_USER = "user";
 export const HASURA_ROLE_ANONYMOUS = "anonymous";
+export const HASURA_ROLES = [
+  HASURA_ROLE_ADMIN,
+  HASURA_ROLE_USER,
+  HASURA_ROLE_ANONYMOUS
+];
 
 export const GQL_ROLE_ADMIN = HASURA_ROLE_ADMIN.toUpperCase();
 export const GQL_ROLE_USER = HASURA_ROLE_USER.toUpperCase();
 export const GQL_ROLE_ANONYMOUS = HASURA_ROLE_ANONYMOUS.toUpperCase();
+
+export const STATUS_INACTIVE = "inactive";
+export const STATUS_ACTIVE = "active";
+export const STATUS_DISABLED = "disabled";
+export const STATUS_DELETED = "deleted";
+
+export const STATUSES = [
+  STATUS_ACTIVE,
+  STATUS_INACTIVE,
+  STATUS_DISABLED,
+  STATUS_DELETED,
+];
+
+export type Status
+  = typeof STATUS_ACTIVE
+  | typeof STATUS_INACTIVE
+  | typeof STATUS_DISABLED
+  | typeof STATUS_DELETED;
 
 export type HasuraRole
   = typeof HASURA_ROLE_ADMIN
@@ -65,7 +82,7 @@ export interface IHasuraEventTriggerEvent<
   O = IAnyObject,
   N = IAnyObject,
   S = SessionVariables
-> {
+  > {
   session_variables: S;
   op: OP;
   data: {
@@ -100,7 +117,7 @@ export interface IHasuraEventTriggerTable {
 export interface IHasuraEventTriggerPayload<
   E extends IHasuraEventTriggerEvent<HasuraEventTriggerOpName>,
   N = string
-> {
+  > {
   event: E;
   created_at: string;
   id: string;

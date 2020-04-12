@@ -1,17 +1,14 @@
 import * as jwt from "jsonwebtoken";
 import { SESSION_KEY } from "../env";
 import { requestGQL } from "../http-client";
-import { Role } from "../types";
+import { HasuraRole } from "../types";
 
 export interface IAuthUser {
   id: string;
   status: string;
   email: string;
-  fullName: string;
   password: string;
-  role: Role;
-  createdBy: string;
-  updatedBy: string;
+  role: HasuraRole;
 }
 type VerifyTokenFunc = (token: string) => Promise<IAuthUser>;
 type FindUserByIDFunc = (id: string) => Promise<IAuthUser>;
@@ -24,11 +21,11 @@ export interface IJwtAuth {
 const verifyToken: VerifyTokenFunc = async (token) => {
   const result = jwt.verify(token, SESSION_KEY);
 
-  if (typeof result !== "object" || Array.isArray(result) || !(<any> result).id) {
+  if (typeof result !== "object" || Array.isArray(result) || !(result as any).id) {
     throw new Error("invalid token");
   }
 
-  return <any> result;
+  return result as any;
 };
 
 const findUserByID: FindUserByIDFunc = async (id) => {
@@ -39,14 +36,9 @@ const findUserByID: FindUserByIDFunc = async (id) => {
         id: { _eq: $id }
       }) {
         id
-        fullName
         email
         password
         role
-        createdAt
-        createdBy
-        updatedAt
-        updatedBy
         status
       }
     }

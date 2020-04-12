@@ -1,7 +1,7 @@
 import { AuthDirectiveSchema } from "../shared/graphql/directives";
 import { validatorDirectiveSchema } from "../shared/graphql/directives/ValidatiorDirective";
 import { gqlCustomScalars } from "../shared/graphql/types";
-import { Role } from "../shared/types";
+import { GQL_ROLE_USER } from "../shared/types";
 import * as auth from "./auth";
 
 export function getRootSchema() {
@@ -9,11 +9,10 @@ export function getRootSchema() {
   const gqlCommonSchemas = `
     ${gqlCustomScalars.schema}
     ${validatorDirectiveSchema}
-    ${AuthDirectiveSchema([Role.User])}
+    ${AuthDirectiveSchema([GQL_ROLE_USER])}
   `;
 
   const gqlSchemas = [
-    auth.gqlSchema
   ];
   const gqlQuerySchemas = [
     auth.gqlQuerySchema

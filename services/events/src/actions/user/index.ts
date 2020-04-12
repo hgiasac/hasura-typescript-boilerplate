@@ -9,21 +9,19 @@ export const loginHandler: LoginAction = async (_, payload) => {
 
   try {
 
-    const user = await JwtAuth.login(input);
+    const user = await JwtAuth.login(input.data);
     const token = await JwtAuth.encodeToken(user);
 
     return {
       token,
-      id: user.id,
-      email: user.email,
-      fullName: user.fullName,
-      role: user.role,
+      ...user,
+      password: undefined,
     };
   } catch (err) {
 
     throw new HasuraActionError({
       code: err.code || err.name,
-      message: "Invalid email or password"
+      message: err.message || "Invalid email or password"
     });
   }
 }
@@ -33,9 +31,9 @@ export const createUserHandler: CreateUserAction = async (_, payload) => {
   const { input } = payload;
   const userID = getActionUserID(payload);
   const user = await JwtAuth.createUser({
-    ...input,
-    createdBy: userID,
-    updatedBy: userID,
+    ...input.data,
+    created_by: userID,
+    updated_by: userID,
   });
 
   return {

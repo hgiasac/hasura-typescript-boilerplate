@@ -6,3 +6,4 @@ export const PASSWORD_SALT = process.env.PASSWORD_SALT ? parseInt(process.env.PA
 
 export const DEBUG = !!process.env.DEBUG || !process.env.NODE_ENV || process.env.NODE_ENV === "development";
 export const DATABASE_URL = process.env.DATABASE_URL;
+export const LOG_LEVEL = DEBUG ? "debug" : (process.env.LOG_LEVEL || "info");
