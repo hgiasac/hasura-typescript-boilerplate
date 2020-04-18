@@ -1,5 +1,6 @@
 # Hasura Typescript Boilerplate
 
+- [Production checklist] (docs/production-checklist)
 
 ## Project Structure
 
@@ -37,6 +38,6 @@ docker-compose up -d
 docker-compose -f ./docker-compose.dev.yaml up -d
 ```
 
-## Production Practice
+## Advanced guidelines
 
-- [Link](docs/production-checklist)
+- [Production checklist] (docs/production-checklist)
