@@ -1,4 +1,4 @@
-import { Role } from "../../shared/types";
+import { GQL_ROLE_ADMIN, GQL_ROLE_ANONYMOUS } from "../../shared/types";
 
 export const gqlSchema = `
 
@@ -17,9 +17,9 @@ type TokenResponse {
 `;
 
 export const gqlQuerySchema = `
-  hello: String! @auth(requires: [${Role.Admin}, ${Role.Anonymous}])
+  hello: String! @auth(requires: [${GQL_ROLE_ADMIN}, ${GQL_ROLE_ANONYMOUS}])
 `;
 
 export const gqlMutationSchema = `
-  login(input: LoginInput!): TokenResponse! @auth(requires: ${Role.Anonymous})
+  login(input: LoginInput!): TokenResponse! @auth(requires: ${GQL_ROLE_ANONYMOUS})
 `;

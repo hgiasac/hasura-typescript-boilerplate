@@ -13,3 +13,5 @@ POSTGRES_PASSWORD=postgres
 COOKIE_KEY=inputcookiesecrethere
 # base64 encoded random string
 SESSION_KEY=inputsessionsecrethere
+
+GCP_PROJECT=
