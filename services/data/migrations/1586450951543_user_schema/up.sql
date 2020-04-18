@@ -4,7 +4,11 @@ CHECK(
    VALUE ~ '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+[.][a-zA-Z0-9-]+([.][a-zA-Z0-9-]+)?$'
 );
 
-CREATE TABLE "public"."status"("id" text NOT NULL, "description" text NOT NULL, PRIMARY KEY ("id") );
+CREATE TABLE "public"."status"(
+  "id" text NOT NULL, 
+  "description" text NOT NULL, 
+  PRIMARY KEY ("id") 
+);
 
 INSERT INTO "public"."status" ("id", "description")
 VALUES 
@@ -17,20 +21,21 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TABLE "public"."users" (
   "id" uuid NOT NULL DEFAULT gen_random_uuid(), 
   "email" email NOT NULL UNIQUE, 
-  "password" text NOT NULL, 
-  "first_name" text NOT NULL DEFAULT '', 
-  "last_name" text NOT NULL DEFAULT '', 
+  "emailVerified" boolean NOT NULL DEFAULT false, 
+
+  "firstName" text NOT NULL DEFAULT '', 
+  "lastName" text NOT NULL DEFAULT '', 
   "role" text NOT NULL, 
-  "created_at" timestamptz NOT NULL DEFAULT now(), 
-  "updated_at" timestamptz NOT NULL DEFAULT now(), 
-  "created_by" uuid, 
-  "updated_by" uuid, 
-  "status" text NOT NULL, 
+  "firebaseId" text NOT NULL,
+  
+  "createdAt" timestamptz NOT NULL DEFAULT now(), 
+  "updatedAt" timestamptz NOT NULL DEFAULT now(), 
+  "createdBy" uuid, 
+  "updatedBy" uuid, 
+  "deleted" boolean NOT NULL DEFAULT false, 
   PRIMARY KEY ("id"), 
-  FOREIGN KEY ("status") REFERENCES "public"."status"("id") 
-    ON UPDATE restrict ON DELETE restrict, 
-  CONSTRAINT "users_check_first_name" CHECK (char_length(first_name) <= 50), 
-  CONSTRAINT "users_check_last_name" CHECK (char_length(last_name) <= 50)
+  CONSTRAINT "users_check_first_name" CHECK (char_length("firstName") <= 50), 
+  CONSTRAINT "users_check_last_name" CHECK (char_length("lastName") <= 50)
 );
 CREATE OR REPLACE FUNCTION "public"."set_current_timestamp_updated_at"()
 RETURNS TRIGGER AS $$
@@ -38,7 +43,7 @@ DECLARE
   _new record;
 BEGIN
   _new := NEW;
-  _new."updated_at" = NOW();
+  _new."updatedAt" = NOW();
   RETURN _new;
 END;
 $$ LANGUAGE plpgsql;
@@ -47,10 +52,10 @@ BEFORE UPDATE ON "public"."users"
 FOR EACH ROW
 EXECUTE PROCEDURE "public"."set_current_timestamp_updated_at"();
 COMMENT ON TRIGGER "set_public_users_updated_at" ON "public"."users" 
-IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+IS 'trigger to set value of column "updatedAt" to current timestamp on row update';
 
 CREATE VIEW public.me AS
     SELECT * FROM users;
 
 CREATE VIEW public.roles AS
-    select * from hdb_catalog.hdb_role;
+    select role_name as "roleName" from hdb_catalog.hdb_role;

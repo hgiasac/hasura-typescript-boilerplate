@@ -5,17 +5,11 @@ actions:
     handler: '{{ACTION_URL}}'
   permissions:
   - role: user
-- name: login
-  definition:
-    kind: synchronous
-    handler: '{{ACTION_URL}}'
 custom_types:
   enums: []
   input_objects:
-  - name: LoginInput
   - name: CreateUserInput
   objects:
-  - name: LoginOutput
   - name: CreateUserOutput
     relationships:
     - remote_table:

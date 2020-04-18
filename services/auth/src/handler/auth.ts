@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { JwtAuth } from "../shared/auth/jwt";
-import { AuthorizationHeader, HASURA_ROLE_ANONYMOUS, STATUS_ACTIVE, XHasuraRole, XHasuraUserID } from "../shared/types";
+import { FirebaseAuth } from "../shared/auth/firebase";
+import { AuthorizationHeader, HASURA_ROLE_ANONYMOUS, XHasuraRole, XHasuraUserID } from "../shared/types";
 
 export async function authenticationHandler(req: Request, res: Response) {
 
@@ -15,15 +15,15 @@ export async function authenticationHandler(req: Request, res: Response) {
   }
 
   try {
-    const decodedToken = await JwtAuth.verifyToken(token);
-    const user = await JwtAuth.findUserByID(decodedToken.id);
+    const decodedToken = await FirebaseAuth.verifyToken(token);
+    const user = await FirebaseAuth.findUserByFirebaseID(decodedToken.uid);
 
     if (!user) {
       throw new Error("user not found");
     }
 
-    if (user.status !== STATUS_ACTIVE) {
-      throw new Error("user is " + user.status);
+    if (user.deleted) {
+      throw new Error("User is deleted. Please contact administator");
     }
 
     return res.json({

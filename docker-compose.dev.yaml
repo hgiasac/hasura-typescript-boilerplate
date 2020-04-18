@@ -6,6 +6,11 @@ x-refs:
     restart: always
     env_file:
     - .env
+    logging:
+      driver: gcplogs
+      options: 
+        gcp-project: ${GCP_PROJECT}
+
 
 services:
 
@@ -16,6 +21,7 @@ services:
     - db_data:/var/lib/postgresql/data
     ports:
     - "5432"
+
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

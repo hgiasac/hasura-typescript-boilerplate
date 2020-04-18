@@ -9,9 +9,5 @@ POSTGRES_USER=postgres
 POSTGRES_DB=postgres
 POSTGRES_PASSWORD=postgres
 
-# base64 encoded random string
-COOKIE_KEY=inputcookiesecrethere
-# base64 encoded random string
-SESSION_KEY=inputsessionsecrethere
-SESSION_EXPIRY=30d
-PASSWORD_SALT=10
+GOOGLE_APPLICATION_CREDENTIALS=~/google-service.json
+GCP_PROJECT=

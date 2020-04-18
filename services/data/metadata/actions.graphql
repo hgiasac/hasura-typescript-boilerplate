@@ -3,35 +3,38 @@ type Mutation {
 }
 
 type Mutation {
-  login(data: LoginInput!): LoginOutput!
-}
-
-input LoginInput {
-  email: String!
-  password: String!
+  changeUserPassword(data: ChangeUserPasswordInput!): ChangeUserPasswordOutput!
 }
 
 input CreateUserInput {
   email: String!
+  emailVerified: Boolean!
   password: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   role: String!
-  status: String!
-}
-
-type LoginOutput {
-  id: String!
-  email: String!
-  first_name: String!
-  last_name: String!
-  role: String!
-  status: String!
-  created_at: String!
-  updated_at: String!
-  token: String!
 }
 
 type CreateUserOutput {
+  id: String!
+  email: String!
+  emailVerified: Boolean!
+  firstName: String!
+  lastName: String!
+  firebaseId: String!
+  role: String!
+  deleted: Boolean!
+  createdBy: String
+  updatedBy: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+input ChangeUserPasswordInput {
+  id: String!
+  password: String!
+}
+
+type ChangeUserPasswordOutput {
   id: String!
 }
