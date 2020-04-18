@@ -11,9 +11,7 @@ x-refs:
       options: 
         gcp-project: ${GCP_PROJECT}
 
-
 services:
-
   postgres:
     restart: always
     image: postgres:12

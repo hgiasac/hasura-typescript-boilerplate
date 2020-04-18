@@ -1,7 +1,11 @@
 # Hasura Typescript Boilerplate
 
-- [Production checklist] (docs/production-checklist)
+## Boilerplate templates
 
+- [Base project](https://github.com/hgiasac/hasura-typescript-boilerplate)
+- [JSON Web Token Authentication](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-jwt)
+- [Firebase Authentication](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-firebase)
+  
 ## Project Structure
 
 - `services/data`: Hasura GraphQL migration 
@@ -40,4 +44,4 @@ docker-compose -f ./docker-compose.dev.yaml up -d
 
 ## Advanced guidelines
 
-- [Production checklist] (docs/production-checklist)
+- [Production checklist](docs/production-checklist)

@@ -6,6 +6,10 @@ x-refs:
     restart: always
     env_file:
     - .env
+    logging:
+      driver: gcplogs
+      options: 
+        gcp-project: ${GCP_PROJECT}
 
 services:
   auths:
