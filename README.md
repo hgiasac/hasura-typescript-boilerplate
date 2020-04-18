@@ -1,6 +1,11 @@
 # Hasura Typescript Boilerplate
 
+## Boilerplate templates
 
+- [Base project](https://github.com/hgiasac/hasura-typescript-boilerplate)
+- [JSON Web Token Authentication](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-jwt)
+- [Firebase Authentication](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-firebase)
+  
 ## Project Structure
 
 - `services/data`: Hasura GraphQL migration 
@@ -13,13 +18,13 @@ Use Hasura CLI: https://docs.hasura.io/1.0/graphql/manual/hasura-cli/install-has
 
 - Design: go to `services/data`, then run 
 
-```
+```bash
 hasura console --admin-secret [secret] --endpoint [endpoint]
 ```
 
 - Migrate: 
 
-```
+```bash
 hasura migrate apply --admin-secret  [secret] --endpoint [endpoint]
 ```
 
@@ -29,5 +34,14 @@ hasura migrate apply --admin-secret  [secret] --endpoint [endpoint]
 - Use Docker with docker-compose
 
 ```
-docker-compose up
+docker-compose up -d
 ```
+- For Test/Production environment, use `docker-compose.dev.yaml` or `docker-compose.prod.yaml` config file. It requires `gcplogs` driver (read below), or you can remove it if using another logging services
+
+```bash
+docker-compose -f ./docker-compose.dev.yaml up -d
+```
+
+## Advanced guidelines
+
+- [Production checklist](docs/production-checklist)

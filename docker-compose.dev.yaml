@@ -6,9 +6,12 @@ x-refs:
     restart: always
     env_file:
     - .env
+    logging:
+      driver: gcplogs
+      options: 
+        gcp-project: ${GCP_PROJECT}
 
 services:
-
   postgres:
     restart: always
     image: postgres:12
@@ -16,6 +19,7 @@ services:
     - db_data:/var/lib/postgresql/data
     ports:
     - "5432"
+
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -33,10 +37,12 @@ services:
       - postgres
     volumes:
       - ./services/auth/src:/usr/src/app/src
+      - ./certs/google-cert.json:/google-cert.json
 
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
       DATA_HOST: http://data:8080
+      GOOGLE_APPLICATION_CREDENTIALS: /google-cert.json
 
   data:
     <<: *common_config
@@ -72,10 +78,13 @@ services:
       - postgres
     volumes:
       - ./services/events/src:/usr/src/app/src
+      - ./certs/google-cert.json:/google-cert.json
 
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
       DATA_HOST: http://data:8080
+      GOOGLE_APPLICATION_CREDENTIALS: /google-cert.json
+      
 
 volumes:
   db_data:

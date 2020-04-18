@@ -15,3 +15,5 @@ COOKIE_KEY=inputcookiesecrethere
 SESSION_KEY=inputsessionsecrethere
 SESSION_EXPIRY=30d
 PASSWORD_SALT=10
+
+GCP_PROJECT=
