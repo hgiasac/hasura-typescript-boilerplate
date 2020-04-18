@@ -3,11 +3,18 @@ import { getFirebaseApp } from "../components/firebase";
 import { requestGQL } from "../http-client";
 import { HasuraRole } from "../types";
 
+export type UserID = string;
+
 export interface IBaseUserInput {
   email: string;
-  email_verified: boolean;
-  first_name: string;
-  last_name: string;
+  emailVerified: boolean;
+  firstName: string;
+  lastName: string;
+}
+
+export interface IChangePasswordInput {
+  firebaseId: string;
+  password: string;
 }
 
 export interface ICreateFirebaseUserInput extends IBaseUserInput {
@@ -16,31 +23,35 @@ export interface ICreateFirebaseUserInput extends IBaseUserInput {
 
 export interface ICreateUserInput extends IBaseUserInput {
   role: HasuraRole;
-  firebase_id: string;
-  created_by: string;
-  updated_by: string;
+  firebaseId: string;
+  createdBy: string;
+  updatedBy: string;
   deleted: boolean;
 }
 
 export interface IAuthUser extends ICreateUserInput {
-  id: string;
-  created_at: string;
-  updated_at: string;
+  id: UserID;
+  createdAt: string;
+  updatedAt: string;
 }
 
-type CreateUserFunc = (input: ICreateUserInput & { password: string }) =>
-  Promise<IAuthUser>;
+type CreateUserFunc =
+  (input: ICreateUserInput & { password: string }) => Promise<IAuthUser>;
+type FindUserByFirebaseIdFunc = (id: string) => Promise<IAuthUser>;
+type ChangePasswordFunc = (input: IChangePasswordInput) => Promise<auth.UserRecord>;
 
 export interface IFirebaseAuth {
   createUser: CreateUserFunc;
+  findUserByFirebaseId: FindUserByFirebaseIdFunc;
+  changePassword: ChangePasswordFunc;
 }
 
 export function createFirebaseUser(input: ICreateFirebaseUserInput): Promise<auth.UserRecord> {
   return getFirebaseApp()
     .auth().createUser({
       email: input.email,
-      emailVerified: input.email_verified,
-      displayName: `${input.first_name} ${input.last_name}`,
+      emailVerified: input.emailVerified,
+      displayName: `${input.firstName} ${input.lastName}`,
       password: input.password,
     });
 }
@@ -54,15 +65,15 @@ const createUser: CreateUserFunc = async (input) => {
         returning {
           id
           email
-          email_verified
-          first_name
-          last_name
-          firebase_id
+          emailVerified
+          firstName
+          lastName
+          firebaseId
           role
-          created_at
-          updated_at
-          created_by
-          updated_by
+          createdAt
+          updatedAt
+          createdBy
+          updatedBy
           deleted
         }
       }
@@ -82,17 +93,48 @@ const createUserWithFirebase: CreateUserFunc = async (input) =>
   createFirebaseUser(input)
     .then((fbUser) => ({
       email: input.email,
-      email_verified: input.email_verified,
-      first_name: input.first_name,
-      last_name: input.last_name,
-      firebase_id: fbUser.uid,
+      emailVerified: input.emailVerified,
+      firstName: input.firstName,
+      lastName: input.lastName,
+      firebaseId: fbUser.uid,
       role: input.role,
-      created_by: input.created_by,
-      updated_by: input.updated_by,
+      createdBy: input.createdBy,
+      updatedBy: input.updatedBy,
       deleted: input.deleted || false,
     }))
     .then(createUser);
 
+const findUserByFirebaseId: FindUserByFirebaseIdFunc = async (id) => {
+
+  const query = `
+    query findUserByFirebaseId($firebaseId: String!) {
+      users(where: {
+        firebaseId: { _eq: $firebaseId }
+      }) {
+        id
+        email
+        role
+        deleted
+      }
+    }
+  `;
+
+  return requestGQL<{ users: IAuthUser[] }>({
+    query,
+    variables: { id },
+    isAdmin: true
+  }).then((rs) => rs.users[0]);
+};
+
+const changePassword: ChangePasswordFunc = async (input) => {
+  return getFirebaseApp().auth()
+    .updateUser(input.firebaseId, {
+      password: input.password
+    });
+}
+
 export const FirebaseAuth: IFirebaseAuth = {
+  findUserByFirebaseId,
+  changePassword,
   createUser: createUserWithFirebase,
 };

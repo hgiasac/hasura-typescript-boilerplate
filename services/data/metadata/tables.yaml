@@ -89,7 +89,7 @@
       - createdBy
       - updatedBy
       - deleted
-      filter: 
+      filter:
         deleted:
           _eq: false
       allow_aggregations: true

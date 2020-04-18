@@ -16,7 +16,7 @@ export async function authenticationHandler(req: Request, res: Response) {
 
   try {
     const decodedToken = await FirebaseAuth.verifyToken(token);
-    const user = await FirebaseAuth.findUserByFirebaseID(decodedToken.uid);
+    const user = await FirebaseAuth.findUserByFirebaseId(decodedToken.uid);
 
     if (!user) {
       throw new Error("user not found");

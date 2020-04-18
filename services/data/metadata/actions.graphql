@@ -1,40 +1,51 @@
 type Mutation {
-  createUser(data: CreateUserInput!): CreateUserOutput!
+  changeUserPassword (
+    data: ChangeUserPasswordInput!
+  ): ChangeUserPasswordOutput!
 }
+
 
 type Mutation {
-  changeUserPassword(data: ChangeUserPasswordInput!): ChangeUserPasswordOutput!
+  createUser (
+    data: CreateUserInput!
+  ): CreateUserOutput!
 }
+
+
+
 
 input CreateUserInput {
-  email: String!
-  emailVerified: Boolean!
-  password: String!
-  firstName: String!
-  lastName: String!
-  role: String!
-}
-
-type CreateUserOutput {
-  id: String!
-  email: String!
-  emailVerified: Boolean!
-  firstName: String!
-  lastName: String!
-  firebaseId: String!
-  role: String!
-  deleted: Boolean!
-  createdBy: String
-  updatedBy: String
-  createdAt: String!
-  updatedAt: String!
+  email : String!
+  emailVerified : Boolean!
+  password : String!
+  firstName : String!
+  lastName : String!
+  role : String!
 }
 
 input ChangeUserPasswordInput {
-  id: String!
-  password: String!
+  userId : uuid!
+  password : String!
+}
+
+type CreateUserOutput {
+  id : uuid!
+  email : String!
+  emailVerified : Boolean!
+  firstName : String!
+  lastName : String!
+  firebaseId : String!
+  role : String!
+  deleted : Boolean!
+  createdBy : uuid
+  updatedBy : uuid
+  createdAt : timestamptz!
+  updatedAt : timestamptz!
 }
 
 type ChangeUserPasswordOutput {
-  id: String!
+  userId : uuid!
 }
+
+scalar uuid
+

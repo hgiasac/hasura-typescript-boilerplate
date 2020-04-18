@@ -10,29 +10,23 @@ export interface IAuthUser {
   deleted: boolean;
 }
 
-export interface IChangePasswordInput {
-  firebaseId: string;
-  password: string;
-}
-
 type VerifyTokenFunc = (token: string) => Promise<auth.DecodedIdToken>;
-type FindUserByFirebaseIDFunc = (id: string) => Promise<IAuthUser>;
-type ChangePasswordFunc = (input: IChangePasswordInput) => Promise<auth.UserRecord>;
+type FindUserByFirebaseIdFunc = (id: string) => Promise<IAuthUser>;
 
 export interface IFirebaseAuth {
   verifyToken: VerifyTokenFunc;
-  findUserByFirebaseID: FindUserByFirebaseIDFunc;
-  changePassword: ChangePasswordFunc;
+  findUserByFirebaseId: FindUserByFirebaseIdFunc;
 }
 
-const verifyToken: VerifyTokenFunc = (token) => getFirebaseApp().auth().verifyIdToken(token);
+const verifyToken: VerifyTokenFunc = (token) =>
+  getFirebaseApp().auth().verifyIdToken(token);
 
-const findUserByFirebaseID: FindUserByFirebaseIDFunc = async (id) => {
+const findUserByFirebaseId: FindUserByFirebaseIdFunc = async (id) => {
 
   const query = `
-    query findUserByFirebaseID($firebaseID: String!) {
+    query findUserByFirebaseId($firebaseId: String!) {
       users(where: {
-        firebase_id: { _eq: $firebaseID }
+        firebaseId: { _eq: $firebaseId }
       }) {
         id
         email
@@ -49,15 +43,7 @@ const findUserByFirebaseID: FindUserByFirebaseIDFunc = async (id) => {
   }).then((rs) => rs.users[0]);
 };
 
-const changePassword: ChangePasswordFunc = async (input) => {
-  return getFirebaseApp().auth()
-    .updateUser(input.firebaseId, {
-      password: input.password
-    });
-}
-
 export const FirebaseAuth: IFirebaseAuth = {
   verifyToken,
-  findUserByFirebaseID,
-  changePassword,
+  findUserByFirebaseId,
 };
