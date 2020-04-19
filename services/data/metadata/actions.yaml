@@ -1,4 +1,16 @@
 actions:
+- name: changeProfilePassword
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_URL}}'
+  permissions:
+  - role: user
+- name: changeUserPassword
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_URL}}'
+  permissions:
+  - role: user
 - name: createUser
   definition:
     kind: synchronous
@@ -9,11 +21,15 @@ actions:
   definition:
     kind: synchronous
     handler: '{{ACTION_URL}}'
+  permissions:
+  - role: anonymous
 custom_types:
   enums: []
   input_objects:
   - name: LoginInput
   - name: CreateUserInput
+  - name: ChangeUserPasswordInput
+  - name: ChangeProfilePasswordInput
   objects:
   - name: LoginOutput
   - name: CreateUserOutput
@@ -25,4 +41,23 @@ custom_types:
       type: object
       field_mapping:
         id: id
-  scalars: []
+  - name: ChangeUserPasswordOutput
+    relationships:
+    - remote_table:
+        schema: public
+        name: users
+      name: user
+      type: object
+      field_mapping:
+        userId: id
+  - name: ChangeProfilePasswordOutput
+    relationships:
+    - remote_table:
+        schema: public
+        name: users
+      name: user
+      type: object
+      field_mapping:
+        userId: id
+  scalars:
+  - name: uuid

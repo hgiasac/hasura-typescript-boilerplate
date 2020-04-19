@@ -1,8 +1,6 @@
 import { IActionHandlerMap } from "./types";
-import { createUserHandler, loginHandler } from "./user";
-import { CREATE_USER_ACTION, LOGIN_ACTION } from "./user/types";
+import userActions from "./user";
 
 export default {
-  [LOGIN_ACTION]: loginHandler,
-  [CREATE_USER_ACTION]: createUserHandler,
+  ...userActions,
 } as IActionHandlerMap;

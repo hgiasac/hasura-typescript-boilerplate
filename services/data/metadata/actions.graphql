@@ -6,6 +6,14 @@ type Mutation {
   login(data: LoginInput!): LoginOutput!
 }
 
+type Mutation {
+  changeUserPassword(data: ChangeUserPasswordInput!): ChangeUserPasswordOutput!
+}
+
+type Mutation {
+  changeProfilePassword(data: ChangeProfilePasswordInput!): ChangeProfilePasswordOutput!
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -14,24 +22,42 @@ input LoginInput {
 input CreateUserInput {
   email: String!
   password: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   role: String!
-  status: String!
 }
 
 type LoginOutput {
   id: String!
   email: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   role: String!
-  status: String!
-  created_at: String!
-  updated_at: String!
+  createdAt: String!
+  updatedAt: String!
   token: String!
 }
 
 type CreateUserOutput {
   id: String!
 }
+
+input ChangeUserPasswordInput {
+  userId: uuid!
+  password: String!
+}
+
+type ChangeUserPasswordOutput {
+  userId: uuid!
+}
+
+input ChangeProfilePasswordInput {
+  oldPassword: String!
+  newPassword: String!
+}
+
+type ChangeProfilePasswordOutput {
+  userId: uuid!
+}
+
+scalar uuid

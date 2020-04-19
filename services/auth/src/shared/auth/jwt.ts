@@ -9,6 +9,7 @@ export interface IAuthUser {
   email: string;
   password: string;
   role: HasuraRole;
+  deleted: boolean;
 }
 type VerifyTokenFunc = (token: string) => Promise<IAuthUser>;
 type FindUserByIDFunc = (id: string) => Promise<IAuthUser>;
@@ -39,7 +40,7 @@ const findUserByID: FindUserByIDFunc = async (id) => {
         email
         password
         role
-        status
+        deleted
       }
     }
   `;

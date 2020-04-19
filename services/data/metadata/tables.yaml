@@ -5,16 +5,16 @@
   - role: user
     permission:
       columns:
-      - created_at
-      - created_by
+      - createdAt
+      - createdBy
       - email
-      - first_name
+      - firstName
       - id
-      - last_name
+      - lastName
       - role
-      - status
-      - updated_at
-      - updated_by
+      - deleted
+      - updatedAt
+      - updatedBy
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -22,14 +22,14 @@
   - role: user
     permission:
       columns:
-      - first_name
-      - last_name
+      - firstName
+      - lastName
       filter:
         id:
           _eq: X-Hasura-User-Id
       check: null
       set:
-        updated_by: x-hasura-User-Id
+        updatedBy: x-hasura-User-Id
 - table:
     schema: public
     name: roles
@@ -37,7 +37,7 @@
   - role: user
     permission:
       columns:
-      - role_name
+      - roleName
       filter: {}
       allow_aggregations: true
 - table:
@@ -55,37 +55,36 @@
     schema: public
     name: users
   object_relationships:
-  - name: created_user
+  - name: createdUser
     using:
       manual_configuration:
         remote_table:
           schema: public
           name: users
         column_mapping:
-          created_by: id
-  - name: updated_user
+          createdBy: id
+  - name: updatedUser
     using:
       manual_configuration:
         remote_table:
           schema: public
           name: users
         column_mapping:
-          updated_by: id
+          updatedBy: id
   select_permissions:
   - role: user
     permission:
       columns:
       - id
       - email
-      - password
-      - first_name
-      - last_name
+      - firstName
+      - lastName
       - role
-      - created_at
-      - updated_at
-      - created_by
-      - updated_by
-      - status
+      - createdAt
+      - updatedAt
+      - createdBy
+      - updatedBy
+      - deleted
       filter: {}
       allow_aggregations: true
   update_permissions:
@@ -93,11 +92,11 @@
     permission:
       columns:
       - email
-      - first_name
-      - last_name
+      - firstName
+      - lastName
       - role
-      - status
+      - deleted
       filter: {}
       check: null
       set:
-        updated_by: x-hasura-User-Id
+        updatedBy: x-hasura-User-Id

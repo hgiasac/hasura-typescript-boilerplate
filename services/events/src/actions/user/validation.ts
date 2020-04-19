@@ -1,18 +1,30 @@
 import Joi = require("@hapi/joi");
-import { RoleValidator, StatusValidator } from "../../shared/validator";
+import { RoleValidator } from "../../shared/validator";
+
+const UserIDValidator = Joi.string().uuid().required();
+const PasswordValidator = Joi.string().min(6).required();
 
 export const LoginValidator = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+  password: PasswordValidator,
 });
 
 export const CreateUserValidator = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  first_name: Joi.string().min(1).max(50),
-  last_name: Joi.string().min(1).max(50),
+  firstName: Joi.string().min(1).max(50),
+  lastName: Joi.string().min(1).max(50),
   role: RoleValidator.required(),
-  created_by: Joi.string().uuid(),
-  updated_by: Joi.string().uuid(),
-  status: StatusValidator.required(),
+  createdBy: Joi.string().uuid(),
+  updatedBy: Joi.string().uuid(),
 })
+
+export const ChangeUserPasswordValidator = Joi.object({
+  userId: UserIDValidator,
+  password: PasswordValidator,
+});
+
+export const ChangeProfilePasswordValidator = Joi.object({
+  oldPassword: PasswordValidator,
+  newPassword: PasswordValidator,
+});

@@ -2,18 +2,19 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { PASSWORD_SALT, SESSION_EXPIRY, SESSION_KEY } from "../env";
 import { requestGQL } from "../http-client";
-import { HasuraRole, Status, STATUS_ACTIVE } from "../types";
+import { HasuraRole, IRequestHeaders, XHasuraRole, XHasuraUserID } from "../types";
 import { UnauthorizedError } from "./types";
+
+export type UserID = string;
 
 export interface ICreateUserInput {
   email: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   password: string;
   role: HasuraRole;
-  created_by: string;
-  updated_by: string;
-  status: Status;
+  createdBy: string;
+  updatedBy: string;
 }
 
 export interface ILoginInput {
@@ -23,20 +24,36 @@ export interface ILoginInput {
 
 export interface IAuthUser extends ICreateUserInput {
   id: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
+  deleted: boolean;
+}
+
+export interface IChangeUserPasswordInput {
+  userId: string;
+  password: string;
+}
+
+export interface IChangeProfilePasswordInput {
+  userId: string;
+  oldPassword: string;
+  newPassword: string;
 }
 
 type CreateUserFunc = (input: ICreateUserInput) => Promise<IAuthUser>;
 type EncodeTokenFunc = (user: IAuthUser) => Promise<string>;
 type VerifyTokenFunc = (token: string) => Promise<IAuthUser>;
 type LoginFunc = (user: ILoginInput) => Promise<IAuthUser>;
+type ChangeProfilePasswordFunc = (input: IChangeProfilePasswordInput) => Promise<UserID>;
+type ChangeUserPasswordFunc = (input: IChangeUserPasswordInput, headers?: IRequestHeaders) => Promise<UserID>;
 
 export interface IJwtAuth {
   createUser: CreateUserFunc;
   encodeToken: EncodeTokenFunc;
   verifyToken: VerifyTokenFunc;
   login: LoginFunc;
+  changeUserPassword: ChangeUserPasswordFunc;
+  changeProfilePassword: ChangeProfilePasswordFunc;
 }
 
 const hashPassword = (pw: string) => bcrypt.hash(pw, PASSWORD_SALT);
@@ -93,13 +110,13 @@ const login: LoginFunc = async (input) => {
       }) {
         id
         email
-        first_name
-        last_name
+        firstName
+        lastName
         password
         role
-        status
-        updated_at
-        created_at
+        deleted
+        updatedAt
+        createdAt
       }
     }
   `;
@@ -110,26 +127,98 @@ const login: LoginFunc = async (input) => {
     isAdmin: true
   }).then((rs) => rs.users);
 
-  if (!resp.length) {
+  if (!resp.length || resp[0].deleted) {
     throw new UnauthorizedError("User not found");
   }
 
   const user = resp[0];
+
   const isMatched = await comparePassword(input.password, user.password);
   if (!isMatched) {
     throw new UnauthorizedError("Wrong password");
   }
 
-  if (user.status !== STATUS_ACTIVE) {
-    throw new UnauthorizedError("User is " + user.status);
-  }
-
   return user;
 };
+
+// change user password, used by manager/admin
+export const changeUserPassword: ChangeUserPasswordFunc = async (input, headers = {}) => {
+
+  const hashedPassword = await hashPassword(input.password);
+
+  const query = `
+      mutation changeUserPassword($userId: uuid!, $password: String!) {
+        update_users(where: {
+          id: { _eq: $userId }
+        }, _set: {password: $password}) {
+          affected_rows
+        }
+      }
+  `;
+
+  const affectedRows = await requestGQL({
+    headers,
+    query,
+    variables: {
+      userId: input.userId,
+      password: hashedPassword,
+    },
+    isAdmin: true,
+  }).then((data) => data.update_users.affected_rows);
+
+  if (!affectedRows) {
+    throw new Error("user not found!");
+  }
+
+  return input.userId;
+};
+
+// change current user password; require compare old password
+export const changeProfilePassword: ChangeProfilePasswordFunc = async (input) => {
+  // compare password
+  const query = `
+    query findUserPasswordById($id: uuid!) {
+      users(where: {
+        id: { _eq: $id }
+      }) {
+        id
+        role
+        password
+        deleted
+      }
+    }
+  `;
+
+  const resp = await requestGQL<{ users: IAuthUser[] }>({
+    query,
+    variables: { id: input.userId },
+    isAdmin: true,
+  }).then((rs) => rs.users);
+
+  if (!resp.length || resp[0].deleted) {
+    throw new Error("User not found");
+  }
+
+  const user = resp[0];
+  const isMatched = await comparePassword(input.oldPassword, user.password);
+  if (!isMatched) {
+    throw new Error("Wrong password");
+  }
+
+  return changeUserPassword({
+    userId: input.userId,
+    password: input.newPassword,
+  }, {
+    [XHasuraUserID]: user.id,
+    [XHasuraRole]: user.role,
+  });
+}
 
 export const JwtAuth: IJwtAuth = {
   createUser,
   encodeToken,
   verifyToken,
-  login
+  login,
+  changeProfilePassword,
+  changeUserPassword,
 };
