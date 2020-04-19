@@ -64,6 +64,7 @@ export const requestGQL = <T = any>(options: IGQLRequestOptions): Promise<T> => 
   return client.post(url, {
     query: options.query,
     variables: options.variables,
+    headers: options.headers
   }).then((resp) => {
     if (resp.status !== 200) {
       throw new UserInputError(resp.statusText, resp.data);
