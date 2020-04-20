@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { JwtAuth } from "../shared/auth/jwt";
-import { AuthorizationHeader, HASURA_ROLE_ANONYMOUS, XHasuraRole, XHasuraUserID } from "../shared/types";
+import { AuthorizationHeader, AuthBearer, HASURA_ROLE_ANONYMOUS, XHasuraRole, XHasuraUserID } from "../shared/types";
 
 export async function authenticationHandler(req: Request, res: Response) {
 
@@ -14,8 +14,15 @@ export async function authenticationHandler(req: Request, res: Response) {
     return res.json(anonymous);
   }
 
+  const parts = token.split(" ");
+
   try {
-    const decodedToken = await JwtAuth.verifyToken(token);
+
+    if (parts.length < 2 || parts[0] !== AuthBearer) {
+      throw new Error("Invalid authorized token");
+    }
+
+    const decodedToken = await JwtAuth.verifyToken(parts[1]);
     const user = await JwtAuth.findUserByID(decodedToken.id);
 
     if (!user || user.deleted) {

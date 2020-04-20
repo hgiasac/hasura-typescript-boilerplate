@@ -44,6 +44,7 @@ services:
     volumes:
       - ./services/data/migrations:/hasura-migrations
       - ./services/data/metadata:/hasura-metadata
+    restart: always
     ports:
       - "8080:8080"
     depends_on:
