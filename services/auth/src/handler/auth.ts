@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { FirebaseAuth } from "../shared/auth/firebase";
-import { AuthorizationHeader, HASURA_ROLE_ANONYMOUS, XHasuraRole, XHasuraUserID } from "../shared/types";
+import { AuthorizationHeader, AuthBearer, HASURA_ROLE_ANONYMOUS, XHasuraRole, XHasuraUserID } from "../shared/types";
 
 export async function authenticationHandler(req: Request, res: Response) {
 
@@ -15,7 +15,13 @@ export async function authenticationHandler(req: Request, res: Response) {
   }
 
   try {
-    const decodedToken = await FirebaseAuth.verifyToken(token);
+    const parts = token.split(" ");
+
+    if (parts.length < 2 || parts[0] !== AuthBearer) {
+      throw new Error("Invalid authorized token");
+    }
+
+    const decodedToken = await FirebaseAuth.verifyToken(parts[1]);
     const user = await FirebaseAuth.findUserByFirebaseId(decodedToken.uid);
 
     if (!user) {
