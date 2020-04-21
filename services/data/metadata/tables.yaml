@@ -2,6 +2,23 @@
     schema: public
     name: me
   select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - createdAt
+      - createdBy
+      - email
+      - firstName
+      - id
+      - lastName
+      - password
+      - role
+      - updatedAt
+      - updatedBy
+      filter:
+        role:
+          _eq: anonymous
+      limit: 1
   - role: user
     permission:
       columns:

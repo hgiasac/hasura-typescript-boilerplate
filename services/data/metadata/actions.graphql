@@ -1,63 +1,78 @@
 type Mutation {
-  createUser(data: CreateUserInput!): CreateUserOutput!
+  changeProfilePassword (
+    data: ChangeProfilePasswordInput!
+  ): ChangeProfilePasswordOutput!
 }
 
-type Mutation {
-  login(data: LoginInput!): LoginOutput!
-}
 
 type Mutation {
-  changeUserPassword(data: ChangeUserPasswordInput!): ChangeUserPasswordOutput!
+  changeUserPassword (
+    data: ChangeUserPasswordInput!
+  ): ChangeUserPasswordOutput!
 }
 
+
 type Mutation {
-  changeProfilePassword(data: ChangeProfilePasswordInput!): ChangeProfilePasswordOutput!
+  createUser (
+    data: CreateUserInput!
+  ): CreateUserOutput!
 }
+
+
+type Mutation {
+  login (
+    data: LoginInput!
+  ): LoginOutput!
+}
+
+
+
 
 input LoginInput {
-  email: String!
-  password: String!
+  email : String!
+  password : String!
 }
 
 input CreateUserInput {
-  email: String!
-  password: String!
-  firstName: String!
-  lastName: String!
-  role: String!
-}
-
-type LoginOutput {
-  id: String!
-  email: String!
-  firstName: String!
-  lastName: String!
-  role: String!
-  createdAt: String!
-  updatedAt: String!
-  token: String!
-}
-
-type CreateUserOutput {
-  id: String!
+  email : String!
+  password : String!
+  firstName : String!
+  lastName : String!
+  role : String!
 }
 
 input ChangeUserPasswordInput {
-  userId: uuid!
-  password: String!
-}
-
-type ChangeUserPasswordOutput {
-  userId: uuid!
+  userId : uuid!
+  password : String!
 }
 
 input ChangeProfilePasswordInput {
-  oldPassword: String!
-  newPassword: String!
+  oldPassword : String!
+  newPassword : String!
+}
+
+type LoginOutput {
+  id : String!
+  email : String!
+  firstName : String!
+  lastName : String!
+  role : String!
+  createdAt : String!
+  updatedAt : String!
+  token : String!
+}
+
+type CreateUserOutput {
+  id : String!
+}
+
+type ChangeUserPasswordOutput {
+  userId : uuid!
 }
 
 type ChangeProfilePasswordOutput {
-  userId: uuid!
+  userId : uuid!
 }
 
 scalar uuid
+
