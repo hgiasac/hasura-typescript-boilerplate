@@ -11,6 +11,8 @@ export async function authenticationHandler(req: Request, res: Response) {
 
   // TODO: verify token
   if (!token) {
+    console.log("empty authorization token");
+
     return res.json(anonymous);
   }
 
@@ -18,7 +20,9 @@ export async function authenticationHandler(req: Request, res: Response) {
     const parts = token.split(" ");
 
     if (parts.length < 2 || parts[0] !== AuthBearer) {
-      throw new Error("Invalid authorized token");
+      console.log("invalid authorization token:", token);
+
+      return res.json(anonymous);
     }
 
     const decodedToken = await FirebaseAuth.verifyToken(parts[1]);
@@ -37,7 +41,9 @@ export async function authenticationHandler(req: Request, res: Response) {
       [XHasuraRole]: user.role,
     });
   } catch (err) {
-    return res.status(401).json({
+    console.error("authentication failure", err);
+
+    return res.status(200).json({
       message: err.message,
     });
   }

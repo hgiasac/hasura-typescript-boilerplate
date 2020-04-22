@@ -74,6 +74,25 @@
         column_mapping:
           updatedBy: id
   select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+      - id
+      - email
+      - emailVerified
+      - firstName
+      - lastName
+      - role
+      - firebaseId
+      - createdAt
+      - updatedAt
+      - createdBy
+      - updatedBy
+      - deleted
+      filter:
+        role:
+          _eq: anonymous
+      limit: 1
   - role: user
     permission:
       columns:
