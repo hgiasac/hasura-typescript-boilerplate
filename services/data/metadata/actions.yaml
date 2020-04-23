@@ -11,12 +11,20 @@ actions:
     handler: '{{ACTION_URL}}'
   permissions:
   - role: user
+- name: hello
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_URL}}'
+  permissions:
+  - role: anonymous
 custom_types:
   enums: []
   input_objects:
   - name: CreateUserInput
   - name: ChangeUserPasswordInput
+  - name: HelloInput
   objects:
+  - name: HelloOutput
   - name: CreateUserOutput
     relationships:
     - remote_table:

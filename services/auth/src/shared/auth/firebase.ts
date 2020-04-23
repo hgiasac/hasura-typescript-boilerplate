@@ -21,7 +21,7 @@ export interface IFirebaseAuth {
 const verifyToken: VerifyTokenFunc = (token) =>
   getFirebaseApp().auth().verifyIdToken(token);
 
-const findUserByFirebaseId: FindUserByFirebaseIdFunc = async (id) => {
+const findUserByFirebaseId: FindUserByFirebaseIdFunc = async (firebaseId) => {
 
   const query = `
     query findUserByFirebaseId($firebaseId: String!) {
@@ -38,7 +38,7 @@ const findUserByFirebaseId: FindUserByFirebaseIdFunc = async (id) => {
 
   return requestGQL<{ users: IAuthUser[] }>({
     query,
-    variables: { id },
+    variables: { firebaseId },
     isAdmin: true
   }).then((rs) => rs.users[0]);
 };

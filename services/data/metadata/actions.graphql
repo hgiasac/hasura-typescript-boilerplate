@@ -11,9 +11,6 @@ type Mutation {
   ): CreateUserOutput!
 }
 
-
-
-
 input CreateUserInput {
   email : String!
   emailVerified : Boolean!
@@ -49,3 +46,13 @@ type ChangeUserPasswordOutput {
 
 scalar uuid
 
+input HelloInput {
+  hello: String!
+}
+type HelloOutput {
+  hello: String!
+}
+
+type Mutation {
+  hello(data: HelloInput): HelloOutput!
+}

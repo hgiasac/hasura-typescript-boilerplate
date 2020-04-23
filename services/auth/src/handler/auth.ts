@@ -43,9 +43,7 @@ export async function authenticationHandler(req: Request, res: Response) {
   } catch (err) {
     console.error("authentication failure", err);
 
-    return res.status(200).json({
-      message: err.message,
-    });
+    return res.status(200).json(anonymous);
   }
 
 }
