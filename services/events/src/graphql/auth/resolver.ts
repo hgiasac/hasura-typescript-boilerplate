@@ -8,7 +8,7 @@ export const gqlQueryResolver = {
     }
 
     return "world";
-  },
+  }
 };
 
 export const gqlMutationResolver = {

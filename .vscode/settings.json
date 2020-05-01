@@ -1,0 +1,6 @@
+{
+  "eslint.workingDirectories": [
+    "./services/auth",
+    "./services/events",
+  ]
+}

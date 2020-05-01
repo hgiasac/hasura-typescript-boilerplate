@@ -12,9 +12,9 @@ export function newApolloServer(): ApolloServer {
       auth: AuthDirective({
         validate: DefaultAuthValidator
       }),
-      ...validatorDirectiveResolver,
+      ...validatorDirectiveResolver
     },
-    context: async ({ req }) => {
+    context: ({ req }) => {
       try {
         const request = req;
 

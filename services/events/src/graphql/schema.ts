@@ -3,7 +3,7 @@ import { validatorDirectiveSchema } from "../shared/graphql/directives/Validatio
 import { gqlCustomScalars } from "../shared/graphql/types";
 import * as auth from "./auth";
 
-export function getRootSchema() {
+export function getRootSchema(): string {
 
   const gqlCommonSchemas = `
     ${gqlCustomScalars.schema}
@@ -18,7 +18,7 @@ export function getRootSchema() {
     auth.gqlQuerySchema
   ];
   const gqlMutationSchemas = [
-    auth.gqlMutationSchema,
+    auth.gqlMutationSchema
   ];
 
   return `

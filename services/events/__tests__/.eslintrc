@@ -1,0 +1,18 @@
+{
+    "overrides": [
+        {
+            "files": [
+                "*.js",
+                "*.ts"
+            ],
+            "parserOptions": {
+                "project": "__tests__/tsconfig.json",
+                "sourceType": "module"
+            },
+            "globals": {
+                "expect": true,
+                "it": true
+            }
+        }
+    ]
+}

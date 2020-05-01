@@ -1,11 +1,11 @@
 import { DEBUG } from "../env";
 
-export interface ILogger {
-  debug: (...args: any[]) => void;
-  info: (...args: any[]) => void;
-  warn: (...args: any[]) => void;
-  error: (...args: any[]) => void;
-}
+export type ILogger = {
+  readonly debug: (...args: readonly any[]) => void
+  readonly info: (...args: readonly any[]) => void
+  readonly warn: (...args: readonly any[]) => void
+  readonly error: (...args: readonly any[]) => void
+};
 
 export const ConsoleLogger: ILogger = {
   debug: (...args) => {
@@ -15,5 +15,5 @@ export const ConsoleLogger: ILogger = {
   },
   info: console.log,
   warn: console.warn,
-  error: console.error,
+  error: console.error
 };

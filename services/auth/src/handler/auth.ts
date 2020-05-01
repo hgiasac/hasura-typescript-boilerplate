@@ -6,11 +6,11 @@ const AdminRole = "admin";
 const XHasuraRole = "X-Hasura-Role";
 const XHasuraUserID = "X-Hasura-User-Id";
 
-export async function authenticationHandler(req: Request, res: Response) {
+export function authenticationHandler(req: Request, res: Response): Response<any> {
 
   const token = req.get(AuthenticationHeader);
   const anonymous = {
-    [XHasuraRole]: AnonymousRole,
+    [XHasuraRole]: AnonymousRole
   };
 
   // TODO: verify token

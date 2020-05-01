@@ -9,5 +9,5 @@ export const gqlCustomScalars = createCustomScalars([
   EmailType,
   UUIDType,
   ...rangeScalaTypes(MinLength, 10),
-  ...rangeScalaTypes(MaxLength, 10),
+  ...rangeScalaTypes(MaxLength, 10)
 ]);

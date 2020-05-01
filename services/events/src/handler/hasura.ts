@@ -7,7 +7,7 @@ import * as env from "../shared/env";
 import { logger } from "../shared/logger";
 
 export const eventHandler: Handler = (req, res) => {
-  const body = <EventTriggerPayload> req.body;
+  const body = <EventTriggerPayload>req.body;
 
   if (!body || !body.trigger || !body.trigger.name) {
     return res.status(400)
@@ -29,7 +29,7 @@ export const eventHandler: Handler = (req, res) => {
     .catch((err) => {
 
       logger.error("executed trigger failed: ", err);
-      logger.debug("Payload", body)
+      logger.debug("Payload", body);
 
       return res.status(400)
         .json({
@@ -40,7 +40,7 @@ export const eventHandler: Handler = (req, res) => {
 };
 
 export const actionHandler: Handler = (req, res) => {
-  const body = <ActionPayload> req.body;
+  const body = <ActionPayload>req.body;
 
   if (env.DEBUG) {
     console.log("Execute action. Payload", body);
@@ -66,7 +66,7 @@ export const actionHandler: Handler = (req, res) => {
     .catch((err) => {
 
       logger.error("Executed action failed: ", err);
-      logger.debug("Payload", body)
+      logger.debug("Payload", body);
 
       return res.status(400)
         .json({
