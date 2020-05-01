@@ -7,5 +7,5 @@ export default {
   [LOGIN_ACTION]: loginHandler,
   [CREATE_USER_ACTION]: createUserHandler,
   [CHANGE_USER_PASSWORD_ACTION]: changeUserPasswordHandler,
-  [CHANGE_PROFILE_PASSWORD_ACTION]: changeProfilePasswordHandler,
+  [CHANGE_PROFILE_PASSWORD_ACTION]: changeProfilePasswordHandler
 } as IActionHandlerMap;

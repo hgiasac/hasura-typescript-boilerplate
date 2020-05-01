@@ -1,3 +1,6 @@
+/* eslint-disable id-blacklist */
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable camelcase */
 import { Handler, Request } from "express";
 import actions from "../actions";
 import { ActionPayload } from "../actions/types";
@@ -16,7 +19,7 @@ export const eventHandler: Handler = (req, res) => {
   const body = req.body as EventTriggerPayload;
 
   const childLogger = logger.child({
-    type: "trigger",
+    type: "trigger"
   });
 
   if (!body || !body.trigger || !body.trigger.name) {
@@ -27,7 +30,7 @@ export const eventHandler: Handler = (req, res) => {
       level: LOG_LEVEL_WARN,
       ...serializeTriggerRequest(req),
       message: error.message,
-      http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS,
+      http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS
     });
 
     return res.status(400)
@@ -46,7 +49,7 @@ export const eventHandler: Handler = (req, res) => {
       message: error.message,
       level: LOG_LEVEL_WARN,
       ...serializeTriggerRequest(req),
-      http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS,
+      http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS
     });
 
     return res.status(HASURA_EVENT_TRIGGER_ERROR_STATUS)
@@ -60,7 +63,7 @@ export const eventHandler: Handler = (req, res) => {
       childLogger.info(`executed trigger ${body.trigger.name} successfully`, {
         ...serializeTriggerRequest(req),
         response: env.DEBUG ? result : undefined,
-        http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS,
+        http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS
       });
 
       return res.status(HASURA_EVENT_TRIGGER_SUCCESS_STATUS)
@@ -71,7 +74,7 @@ export const eventHandler: Handler = (req, res) => {
       logger.error(err.message, {
         ...serializeTriggerRequest(req),
         error: err,
-        http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS,
+        http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS
       });
 
       return res.status(HASURA_EVENT_TRIGGER_ERROR_STATUS)
@@ -83,7 +86,7 @@ export const eventHandler: Handler = (req, res) => {
 };
 
 export const actionHandler: Handler = (req, res) => {
-  const body = req.body as ActionPayload;
+  const body = <ActionPayload>req.body;
 
   const childLogger = logger.child({
     type: "action"
@@ -96,7 +99,7 @@ export const actionHandler: Handler = (req, res) => {
       error,
       payload: req.body,
       request_headers: req.headers,
-      http_code: HASURA_ACTION_ERROR_STATUS,
+      http_code: HASURA_ACTION_ERROR_STATUS
     });
 
     return res.status(HASURA_ACTION_ERROR_STATUS)
@@ -114,7 +117,7 @@ export const actionHandler: Handler = (req, res) => {
     childLogger.warn(error.message, {
       ...serializeActionRequest(req),
       error,
-      http_code: HASURA_ACTION_ERROR_STATUS,
+      http_code: HASURA_ACTION_ERROR_STATUS
     });
 
     return res.status(HASURA_ACTION_ERROR_STATUS)
@@ -128,7 +131,7 @@ export const actionHandler: Handler = (req, res) => {
       childLogger.info(`executed ${body.action.name} successfully`, {
         ...serializeActionRequest(req),
         response: env.DEBUG ? result : undefined,
-        http_code: HASURA_ACTION_SUCCESS_STATUS,
+        http_code: HASURA_ACTION_SUCCESS_STATUS
       });
 
       return res.status(HASURA_ACTION_SUCCESS_STATUS).json(result);
@@ -137,7 +140,7 @@ export const actionHandler: Handler = (req, res) => {
       logger.error(err.message, {
         ...serializeActionRequest(req),
         error: err,
-        http_code: HASURA_ACTION_ERROR_STATUS,
+        http_code: HASURA_ACTION_ERROR_STATUS
       });
 
       return res.status(HASURA_ACTION_ERROR_STATUS)
@@ -148,23 +151,23 @@ export const actionHandler: Handler = (req, res) => {
     });
 };
 
-function serializeActionRequest(req: Request) {
+function serializeActionRequest(req: Request): any {
   const payload = req.body as ActionPayload;
 
   return {
     action_name: payload.action.name,
     session_variables: payload.session_variables,
     request_headers: req.headers,
-    request_body: payload.input,
+    request_body: payload.input
   };
 }
 
-function serializeTriggerRequest(req: Request) {
+function serializeTriggerRequest(req: Request): any {
   const body = req.body as EventTriggerPayload;
 
   return {
     request_body: req.body,
     request_header: req.headers,
-    trigger_name: body.trigger.name,
-  }
+    trigger_name: body.trigger.name
+  };
 }

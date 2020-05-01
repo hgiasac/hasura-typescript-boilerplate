@@ -12,6 +12,6 @@ export interface IActionContext {
 export type ActionHandler<P extends IHasuraActionPayload, R = IAnyObject> =
   (req: IActionContext, payload: P) => Promise<R>;
 
-export interface IActionHandlerMap {
-  [key: string]: ActionHandler<ActionPayload>;
-}
+export type IActionHandlerMap = {
+  readonly [key: string]: ActionHandler<ActionPayload>
+};

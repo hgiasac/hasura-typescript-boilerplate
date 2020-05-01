@@ -6,7 +6,7 @@ const PasswordValidator = Joi.string().min(6).required();
 
 export const LoginValidator = Joi.object({
   email: Joi.string().email().required(),
-  password: PasswordValidator,
+  password: PasswordValidator
 });
 
 export const CreateUserValidator = Joi.object({
@@ -16,15 +16,15 @@ export const CreateUserValidator = Joi.object({
   lastName: Joi.string().min(1).max(50),
   role: RoleValidator.required(),
   createdBy: Joi.string().uuid(),
-  updatedBy: Joi.string().uuid(),
-})
+  updatedBy: Joi.string().uuid()
+});
 
 export const ChangeUserPasswordValidator = Joi.object({
   userId: UserIDValidator,
-  password: PasswordValidator,
+  password: PasswordValidator
 });
 
 export const ChangeProfilePasswordValidator = Joi.object({
   oldPassword: PasswordValidator,
-  newPassword: PasswordValidator,
+  newPassword: PasswordValidator
 });

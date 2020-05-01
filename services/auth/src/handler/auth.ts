@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { JwtAuth } from "../shared/auth/jwt";
 import { AuthorizationHeader, AuthBearer, HASURA_ROLE_ANONYMOUS, XHasuraRole, XHasuraUserID } from "../shared/types";
 
-export async function authenticationHandler(req: Request, res: Response) {
+export async function authenticationHandler(req: Request, res: Response): Promise<Response> {
   const token = req.get(AuthorizationHeader);
   const anonymous = {
-    [XHasuraRole]: HASURA_ROLE_ANONYMOUS,
+    [XHasuraRole]: HASURA_ROLE_ANONYMOUS
   };
 
   // TODO: verify token
@@ -30,7 +30,7 @@ export async function authenticationHandler(req: Request, res: Response) {
 
     return res.json({
       [XHasuraUserID]: user.id,
-      [XHasuraRole]: user.role,
+      [XHasuraRole]: user.role
     });
   } catch (err) {
     console.error("authenticated failure: ", err);

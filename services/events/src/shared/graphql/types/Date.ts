@@ -13,7 +13,7 @@ export default {
       const timestamp = Date.parse(data.value);
 
       if (isNaN(timestamp)) {
-        throw new GraphQLError("Invalid date: " + data.value);
+        throw new GraphQLError(`Invalid date: ${data.value}`);
       }
 
       return new Date(timestamp);
