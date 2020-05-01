@@ -1,25 +1,18 @@
 - table:
     schema: public
     name: me
-  select_permissions:
-  - role: user
+  insert_permissions:
+  - role: anonymous
     permission:
+      check: {}
+      set:
+        firebaseId: x-hasura-firebase-id
+        role: user
       columns:
-      - id
       - email
-      - emailVerified
       - firstName
       - lastName
-      - role
-      - deleted
-      - firebaseId
-      - createdAt
-      - createdBy
-      - updatedAt
-      - updatedBy
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
+  select_permissions:
   - role: anonymous
     permission:
       columns:
@@ -39,6 +32,24 @@
         role:
           _eq: anonymous
       limit: 1
+  - role: user
+    permission:
+      columns:
+      - id
+      - email
+      - emailVerified
+      - firstName
+      - lastName
+      - role
+      - deleted
+      - firebaseId
+      - createdAt
+      - createdBy
+      - updatedAt
+      - updatedBy
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
   update_permissions:
   - role: user
     permission:

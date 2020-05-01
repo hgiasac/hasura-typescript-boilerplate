@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
 import { FirebaseAuth } from "../shared/auth/firebase";
-import { AuthorizationHeader, AuthBearer, HASURA_ROLE_ANONYMOUS, XHasuraRole, XHasuraUserID } from "../shared/types";
+import {
+  AuthorizationHeader,
+  AuthBearer,
+  HASURA_ROLE_ANONYMOUS,
+  XHasuraRole,
+  XHasuraUserID,
+  XHasuraFirebaseID,
+} from "../shared/types";
 
 export async function authenticationHandler(req: Request, res: Response) {
 
@@ -29,7 +36,11 @@ export async function authenticationHandler(req: Request, res: Response) {
     const user = await FirebaseAuth.findUserByFirebaseId(decodedToken.uid);
 
     if (!user) {
-      throw new Error("user not found");
+      // the user is registered on firebase, we can let client side create user by firebase id
+      return res.json({
+        [XHasuraRole]: HASURA_ROLE_ANONYMOUS,
+        [XHasuraFirebaseID]: decodedToken.uid,
+      });
     }
 
     if (user.deleted) {

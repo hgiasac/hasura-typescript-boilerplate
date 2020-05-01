@@ -24,7 +24,6 @@ custom_types:
   - name: ChangeUserPasswordInput
   - name: HelloInput
   objects:
-  - name: HelloOutput
   - name: CreateUserOutput
     relationships:
     - remote_table:
@@ -43,5 +42,6 @@ custom_types:
       type: object
       field_mapping:
         userId: id
+  - name: HelloOutput
   scalars:
   - name: uuid

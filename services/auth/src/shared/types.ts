@@ -5,6 +5,8 @@ export const AuthBearer = "Bearer";
 export const XHasuraAdminSecret = "X-Hasura-Admin-Secret";
 export const XHasuraRole = "X-Hasura-Role";
 export const XHasuraUserID = "X-Hasura-User-Id";
+export const XHasuraFirebaseID = "X-Hasura-Firebase-Id";
+export const XHasuraEmail = "X-Hasura-Email";
 export const ContentType = "Content-type";
 export const ContentTypeJson = "application/json";
 
