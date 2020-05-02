@@ -2,16 +2,16 @@ import { Request } from "express";
 import {
   HasuraEventTriggerEvent,
   HasuraEventTriggerManual,
-  IAnyObject,
-  IHasuraEventTriggerPayload
+  AnyObject,
+  HasuraEventTriggerPayload
 } from "../shared/types";
 
 export type EventTriggerPayload =
-  IHasuraEventTriggerPayload<HasuraEventTriggerManual>;
+  HasuraEventTriggerPayload<HasuraEventTriggerManual>;
 
-export type EventTriggerHandler<P extends HasuraEventTriggerEvent, R = IAnyObject> =
-  (req: Request, payload: IHasuraEventTriggerPayload<P>) => Promise<R>;
+export type EventTriggerHandler<P extends HasuraEventTriggerEvent, R = AnyObject> =
+  (req: Request, payload: HasuraEventTriggerPayload<P>) => Promise<R>;
 
-export type IEventTriggerHandlerMap = {
+export type EventTriggerHandlerMap = {
   readonly [key: string]: EventTriggerHandler<HasuraEventTriggerEvent>
 };

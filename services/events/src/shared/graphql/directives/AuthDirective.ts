@@ -20,12 +20,12 @@ export const AuthDirectiveSchema = (roles: readonly string[], defaultRole = Anon
   }
 `;
 
-export type IAuthDirectiveConfig = {
+export type AuthDirectiveConfig = {
   readonly validate: <C = any>(context: C, requiredRoles: readonly string[]) => Promise<boolean>
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const AuthDirective = (cfg: IAuthDirectiveConfig) => {
+export const AuthDirective = (cfg: AuthDirectiveConfig) => {
 
   function ensureFieldsWrapped(objectType): void {
     // Mark the GraphQLObjectType object to avoid re-wrapping:

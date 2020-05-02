@@ -1,8 +1,8 @@
 import { AuthenticationError } from "apollo-server-core";
-import { IGraphQLContext, XHasuraUserID } from "../../shared/types";
+import { GraphQLContext, XHasuraUserID } from "../../shared/types";
 
 export const gqlQueryResolver = {
-  hello: (_, __, ctx: IGraphQLContext): string => {
+  hello: (_, __, ctx: GraphQLContext): string => {
     if (ctx.request.get(XHasuraUserID) !== "1") {
       throw new AuthenticationError("Unauthorized");
     }

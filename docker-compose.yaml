@@ -32,7 +32,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./services/auth:/usr/src/app
+      - ./services/auth/src:/usr/src/app/src
 
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
@@ -71,7 +71,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./services/events:/usr/src/app
+      - ./services/events/src:/usr/src/app/src
 
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 

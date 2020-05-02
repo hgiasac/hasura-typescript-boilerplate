@@ -1,13 +1,13 @@
 import { DEBUG } from "../env";
 
-export type ILogger = {
+export type Logger = {
   readonly debug: (...args: readonly any[]) => void
   readonly info: (...args: readonly any[]) => void
   readonly warn: (...args: readonly any[]) => void
   readonly error: (...args: readonly any[]) => void
 };
 
-export const ConsoleLogger: ILogger = {
+export const ConsoleLogger: Logger = {
   debug: (...args) => {
     if (DEBUG) {
       console.log(...args);
