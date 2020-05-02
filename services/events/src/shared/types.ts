@@ -114,8 +114,10 @@ export type HasuraActionErrorResponse = {
 export class HasuraActionError extends Error implements HasuraActionErrorResponse {
 
   public readonly code?: string;
+  public readonly message: string;
+  public readonly details?: any;
 
-  constructor({ message, code }: HasuraActionErrorResponse) {
+  constructor({ message, code }: HasuraActionErrorResponse & { readonly details: any }) {
     super(message);
     this.message = message;
     this.code = code;

@@ -1,12 +1,9 @@
 FROM node:alpine
 
-RUN apk add git g++ make python
-
 # Create app directory
 WORKDIR /usr/src/app
 
 RUN npm config set unsafe-perm true 
-RUN apk update && apk add nodejs 
 COPY package.json package-lock.json tsconfig.json .eslintrc.js ./
 RUN npm i -g nodemon typescript @types/node eslint eslint-plugin-import ts-node
 RUN npm i
