@@ -12,20 +12,18 @@ services:
   postgres:
     <<: *common_config
 
-  auths:
+  auth:
     <<: *common_config
-    environment:
-      NODE_ENV: production
     volumes:
       - ./certs/google-cert.json:/google-cert.json
 
   data:
     environment:
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+    volumes:
+      - ./certs/google-cert.json:/google-cert.json
       
   events:
     <<: *common_config
-    environment:
-      NODE_ENV: production
     volumes:
       - ./certs/google-cert.json:/google-cert.json

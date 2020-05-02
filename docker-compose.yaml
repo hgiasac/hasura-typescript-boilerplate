@@ -25,14 +25,11 @@ services:
     <<: *common_config
     build: 
       context: ./services/auth
-      dockerfile: Dockerfile_dev
       network: host
     ports:
     - "9000"
     depends_on:
-      - postgres
-    volumes:
-      - ./services/auth/src:/usr/src/app/src
+    - postgres
 
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
@@ -40,7 +37,7 @@ services:
 
   data:
     <<: *common_config
-    image: hasura/graphql-engine:v1.2.0-beta.4.cli-migrations-v2
+    image: hasura/graphql-engine:v1.2.0.cli-migrations-v2
     volumes:
       - ./services/data/migrations:/hasura-migrations
       - ./services/data/metadata:/hasura-metadata
@@ -52,7 +49,6 @@ services:
       - events
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_MIGRATIONS_DIR: "/hasura-migrations"
       HASURA_GRAPHQL_METADATA_DIR: "/hasura-metadata"
       EVENT_TRIGGER_URL: http://events:9000/events
@@ -64,14 +60,11 @@ services:
     <<: *common_config
     build: 
       context: ./services/events
-      dockerfile: Dockerfile_dev
       network: host
     ports:
     - "9000"
     depends_on:
-      - postgres
-    volumes:
-      - ./services/events/src:/usr/src/app/src
+    - postgres
 
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
