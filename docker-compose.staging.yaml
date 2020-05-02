@@ -14,16 +14,10 @@ services:
 
   auth:
     <<: *common_config
-    volumes:
-      - ./certs/google-cert.json:/google-cert.json
 
   data:
     environment:
       HASURA_GRAPHQL_DEV_MODE: "true"
-    volumes:
-      - ./certs/google-cert.json:/google-cert.json
       
   events:
     <<: *common_config
-    volumes:
-      - ./certs/google-cert.json:/google-cert.json

@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:lts-alpine
 
 RUN apk add git g++ make python
 

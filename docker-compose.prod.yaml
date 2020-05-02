@@ -16,8 +16,6 @@ services:
     <<: *common_config
     environment:
       NODE_ENV: production
-    volumes:
-      - ./certs/google-cert.json:/google-cert.json
 
   data:
     environment:
@@ -27,5 +25,3 @@ services:
     <<: *common_config
     environment:
       NODE_ENV: production
-    volumes:
-      - ./certs/google-cert.json:/google-cert.json
