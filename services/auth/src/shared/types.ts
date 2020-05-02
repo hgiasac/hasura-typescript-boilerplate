@@ -3,6 +3,7 @@
 import { Request } from "express";
 
 export const AuthorizationHeader = "authorization";
+export const AuthBearer = "Bearer";
 export const XHasuraAdminSecret = "x-hasura-admin-secret";
 export const XHasuraRole = "x-hasura-role";
 export const XHasuraUserID = "x-hasura-user-id";
@@ -49,8 +50,6 @@ export type GQLRole
   = typeof GQL_ROLE_ADMIN
   | typeof GQL_ROLE_USER
   | typeof GQL_ROLE_ANONYMOUS;
-
-export const AuthenticationHeader = "authentication";
 
 export type GraphQLContext = {
   readonly request: Request
