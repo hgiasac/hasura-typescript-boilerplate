@@ -7,7 +7,7 @@ import {
   CreateUserInput,
   UserID
 } from "../../shared/auth/jwt";
-import { HasuraRole, IHasuraActionPayload } from "../../shared/types";
+import { HasuraRole, HasuraActionPayload } from "../../shared/types";
 import { ActionHandler } from "../types";
 
 export type LoginInput = {
@@ -36,21 +36,21 @@ export const CHANGE_USER_PASSWORD_ACTION = "changeUserPassword";
 export const CHANGE_PROFILE_PASSWORD_ACTION = "changeProfilePassword";
 
 export type LoginAction = ActionHandler<
-  IHasuraActionPayload<typeof LOGIN_ACTION, { readonly data: LoginInput }>,
+  HasuraActionPayload<typeof LOGIN_ACTION, { readonly data: LoginInput }>,
   TokenResponse
 >;
 
 export type CreateUserAction = ActionHandler<
-  IHasuraActionPayload<typeof CREATE_USER_ACTION, { readonly data: CreateUserInput }>,
+  HasuraActionPayload<typeof CREATE_USER_ACTION, { readonly data: CreateUserInput }>,
   IAuthUser
 >;
 
 export type ChangeUserPassword = ActionHandler<
-  IHasuraActionPayload<typeof CHANGE_USER_PASSWORD_ACTION, { readonly data: IChangeUserPasswordInput }>,
+  HasuraActionPayload<typeof CHANGE_USER_PASSWORD_ACTION, { readonly data: IChangeUserPasswordInput }>,
   IUserIDResponse
 >;
 
 export type ChangeProfilePassword = ActionHandler<
-  IHasuraActionPayload<typeof CHANGE_PROFILE_PASSWORD_ACTION, { readonly data: IChangeProfilePasswordInput }>,
+  HasuraActionPayload<typeof CHANGE_PROFILE_PASSWORD_ACTION, { readonly data: IChangeProfilePasswordInput }>,
   IUserIDResponse
 >;

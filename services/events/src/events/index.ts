@@ -1,5 +1,5 @@
-import { IEventTriggerHandlerMap } from "./types";
+import { EventTriggerHandlerMap } from "./types";
 
 export default {
 
-} as IEventTriggerHandlerMap;
+} as EventTriggerHandlerMap;

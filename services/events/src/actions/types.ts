@@ -1,17 +1,17 @@
 import { Request } from "express";
 import { Logger } from "winston";
-import { IAnyObject, IHasuraActionPayload } from "../shared/types";
+import { AnyObject, HasuraActionPayload } from "../shared/types";
 
-export type ActionPayload = IHasuraActionPayload;
+export type ActionPayload = HasuraActionPayload;
 
-export interface IActionContext {
-  request: Request;
-  logger: Logger;
-}
+export type ActionContext = {
+  readonly request: Request
+  readonly logger: Logger
+};
 
-export type ActionHandler<P extends IHasuraActionPayload, R = IAnyObject> =
-  (req: IActionContext, payload: P) => Promise<R>;
+export type ActionHandler<P extends HasuraActionPayload, R = AnyObject> =
+  (ctx: ActionContext, payload: P) => Promise<R>;
 
-export type IActionHandlerMap = {
+export type ActionHandlerMap = {
   readonly [key: string]: ActionHandler<ActionPayload>
 };

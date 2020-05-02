@@ -10,17 +10,19 @@
     "@types/hapi__joi": "^16.0.12",
     "@types/jsonwebtoken": "^8.3.5",
     "@types/node": "^13.11.0",
-    "@types/winston": "^2.4.4",
-    "apollo-server-express": "^2.11.0",
-    "axios": "^0.19.0",
     "bcrypt": "^4.0.1",
-    "body-parser": "^1.19.0",
     "jsonwebtoken": "^8.5.1",
+    "@types/winston": "^2.4.4",
+    "apollo-server-express": "^2.12.0",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@types/express": "^4.17.6",
     "@types/jest": "^25.2.1",
-    "@types/supertest": "^2.0.8",
+    "@types/node": "^13.13.4",
+    "@types/supertest": "^2.0.9",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "eslint": "^6.8.0",
@@ -77,7 +79,7 @@
     ]
   },
   "nodemonConfig": {
-    "exec": "ts-node src/index.ts",
+    "exec": "npm run lint && ts-node src/index.ts",
     "watch": [
       "src/**/*.ts"
     ],

@@ -2,7 +2,7 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { PASSWORD_SALT, SESSION_EXPIRY, SESSION_KEY } from "../env";
 import { requestGQL } from "../http-client";
-import { HasuraRole, IRequestHeaders, XHasuraRole, XHasuraUserID } from "../types";
+import { HasuraRole, RequestHeaders, XHasuraRole, XHasuraUserID } from "../types";
 import { UnauthorizedError } from "./types";
 
 export type UserID = string;
@@ -45,7 +45,7 @@ type EncodeTokenFunc = (user: IAuthUser) => Promise<string>;
 type VerifyTokenFunc = (token: string) => Promise<IAuthUser>;
 type LoginFunc = (user: LoginInput) => Promise<IAuthUser>;
 type ChangeProfilePasswordFunc = (input: IChangeProfilePasswordInput) => Promise<UserID>;
-type ChangeUserPasswordFunc = (input: IChangeUserPasswordInput, headers?: IRequestHeaders) => Promise<UserID>;
+type ChangeUserPasswordFunc = (input: IChangeUserPasswordInput, headers?: RequestHeaders) => Promise<UserID>;
 
 export type IJwtAuth = {
   readonly createUser: CreateUserFunc

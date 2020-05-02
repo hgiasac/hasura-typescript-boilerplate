@@ -1,6 +1,4 @@
-FROM node:alpine
-
-RUN apk add git g++ make python
+FROM node:lts-alpine
 
 # Working in root app
 WORKDIR /usr/src/app

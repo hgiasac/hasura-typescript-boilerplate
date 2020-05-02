@@ -2,10 +2,23 @@
 
 ## Boilerplate templates
 
-- [Base project](https://github.com/hgiasac/hasura-typescript-boilerplate)
-- [JSON Web Token Authentication](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-jwt)
-- [Firebase Authentication](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-firebase)
-  
+1. Base Project
+- [Backend](https://github.com/hgiasac/hasura-typescript-boilerplate)
+- [React Admin](https://github.com/hgiasac/ra-hasura-typescript-boilerplate)
+- [Next.js](https://github.com/hgiasac/hasura-next-ts-boilerplate)
+- [Next.js + Tailwind](https://github.com/hgiasac/hasura-next-ts-boilerplate/tree/tailwind)
+
+2. JWT Authentication
+- [Backend](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-jwt)
+- [React Admin](https://github.com/hgiasac/ra-hasura-typescript-boilerplate/tree/auth-jwt)
+- [Next.js + Tailwind](https://github.com/hgiasac/hasura-next-ts-boilerplate/tree/tailwind)
+
+3. Firebase Authentication
+- [Backend](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-firebase)
+- [React Admin](https://github.com/hgiasac/ra-hasura-typescript-boilerplate/tree/auth-firebase)
+- [Next.js + Tailwind](https://github.com/hgiasac/hasura-next-ts-boilerplate/tree/tailwind-firebase)
+
+
 ## Project Structure
 
 - `services/data`: Hasura GraphQL migration 
@@ -31,15 +44,19 @@ hasura migrate apply --admin-secret  [secret] --endpoint [endpoint]
 ## How to Run
 
 - Copy `dotenv` file to `.env` and edit configuration if necessary
+
 - Use Docker with docker-compose
 
+```bash
+make dev
 ```
-docker-compose up -d
-```
-- For Test/Production environment, use `docker-compose.dev.yaml` or `docker-compose.prod.yaml` config file. It requires `gcplogs` driver (read below), or you can remove it if using another logging services
+
+- For Test/Production environment, use `docker-compose.test.yaml` or `docker-compose.prod.yaml` config file. It requires `gcplogs` driver (read below), or you can remove it if using another logging services
 
 ```bash
-docker-compose -f ./docker-compose.dev.yaml up -d
+make staging
+# or
+make prod
 ```
 
 ## Advanced guidelines

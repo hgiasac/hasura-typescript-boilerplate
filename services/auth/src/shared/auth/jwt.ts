@@ -3,30 +3,30 @@ import { SESSION_KEY } from "../env";
 import { requestGQL } from "../http-client";
 import { HasuraRole } from "../types";
 
-export interface IAuthUser {
-  id: string;
-  status: string;
-  email: string;
-  password: string;
-  role: HasuraRole;
-  deleted: boolean;
-}
-type VerifyTokenFunc = (token: string) => Promise<IAuthUser>;
-type FindUserByIDFunc = (id: string) => Promise<IAuthUser>;
+export type AuthUser = {
+  readonly id: string
+  readonly status: string
+  readonly email: string
+  readonly password: string
+  readonly role: HasuraRole
+  readonly deleted: boolean
+};
+type VerifyTokenFunc = (token: string) => Promise<AuthUser>;
+type FindUserByIDFunc = (id: string) => Promise<AuthUser>;
 
-export interface IJwtAuth {
-  verifyToken: VerifyTokenFunc;
-  findUserByID: FindUserByIDFunc;
-}
+export type IJwtAuth = {
+  readonly verifyToken: VerifyTokenFunc
+  readonly findUserByID: FindUserByIDFunc
+};
 
-const verifyToken: VerifyTokenFunc = async (token) => {
+const verifyToken: VerifyTokenFunc = (token): Promise<AuthUser> => {
   const result = jwt.verify(token, SESSION_KEY);
 
   if (typeof result !== "object" || Array.isArray(result) || !(result as any).id) {
     throw new Error("invalid token");
   }
 
-  return result as any;
+  return Promise.resolve(result as any);
 };
 
 const findUserByID: FindUserByIDFunc = async (id) => {
@@ -45,7 +45,7 @@ const findUserByID: FindUserByIDFunc = async (id) => {
     }
   `;
 
-  return requestGQL<{ users: IAuthUser[] }>({
+  return requestGQL<{ readonly users: readonly AuthUser[] }>({
     query,
     variables: { id },
     isAdmin: true
@@ -54,5 +54,5 @@ const findUserByID: FindUserByIDFunc = async (id) => {
 
 export const JwtAuth: IJwtAuth = {
   verifyToken,
-  findUserByID,
+  findUserByID
 };

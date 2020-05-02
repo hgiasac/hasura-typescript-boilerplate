@@ -1,6 +1,6 @@
-import { IActionHandlerMap } from "./types";
+import { ActionHandlerMap } from "./types";
 import userActions from "./user";
 
 export default {
   ...userActions
-} as IActionHandlerMap;
+} as ActionHandlerMap;

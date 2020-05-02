@@ -1,6 +1,5 @@
 /* eslint-disable id-blacklist */
 /* eslint-disable import/no-named-as-default-member */
-/* eslint-disable camelcase */
 import { Handler, Request } from "express";
 import actions from "../actions";
 import { ActionPayload } from "../actions/types";
@@ -16,6 +15,10 @@ import {
 } from "../shared/types";
 
 export const eventHandler: Handler = (req, res) => {
+  const extraLoggingInfo = {
+    startTime: new Date()
+  };
+
   const body = req.body as EventTriggerPayload;
 
   const childLogger = logger.child({
@@ -28,7 +31,7 @@ export const eventHandler: Handler = (req, res) => {
     childLogger.log({
       error,
       level: LOG_LEVEL_WARN,
-      ...serializeTriggerRequest(req),
+      ...serializeTriggerRequest(req, extraLoggingInfo),
       message: error.message,
       http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS
     });
@@ -48,7 +51,7 @@ export const eventHandler: Handler = (req, res) => {
       error,
       message: error.message,
       level: LOG_LEVEL_WARN,
-      ...serializeTriggerRequest(req),
+      ...serializeTriggerRequest(req, extraLoggingInfo),
       http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS
     });
 
@@ -57,11 +60,11 @@ export const eventHandler: Handler = (req, res) => {
 
   }
 
-  return ev(req, body)
+  return ev({ request: req, logger: childLogger }, body)
     .then((result) => {
 
       childLogger.info(`executed trigger ${body.trigger.name} successfully`, {
-        ...serializeTriggerRequest(req),
+        ...serializeTriggerRequest(req, extraLoggingInfo),
         response: env.DEBUG ? result : undefined,
         http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS
       });
@@ -72,7 +75,7 @@ export const eventHandler: Handler = (req, res) => {
     .catch((err) => {
 
       logger.error(err.message, {
-        ...serializeTriggerRequest(req),
+        ...serializeTriggerRequest(req, extraLoggingInfo),
         error: err,
         http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS
       });
@@ -86,6 +89,10 @@ export const eventHandler: Handler = (req, res) => {
 };
 
 export const actionHandler: Handler = (req, res) => {
+  const extraLoggingInfo = {
+    startTime: new Date()
+  };
+
   const body = <ActionPayload>req.body;
 
   const childLogger = logger.child({
@@ -115,7 +122,7 @@ export const actionHandler: Handler = (req, res) => {
     };
 
     childLogger.warn(error.message, {
-      ...serializeActionRequest(req),
+      ...serializeActionRequest(req, extraLoggingInfo),
       error,
       http_code: HASURA_ACTION_ERROR_STATUS
     });
@@ -129,7 +136,7 @@ export const actionHandler: Handler = (req, res) => {
     .then((result) => {
 
       childLogger.info(`executed ${body.action.name} successfully`, {
-        ...serializeActionRequest(req),
+        ...serializeActionRequest(req, extraLoggingInfo),
         response: env.DEBUG ? result : undefined,
         http_code: HASURA_ACTION_SUCCESS_STATUS
       });
@@ -138,7 +145,7 @@ export const actionHandler: Handler = (req, res) => {
     })
     .catch((err) => {
       logger.error(err.message, {
-        ...serializeActionRequest(req),
+        ...serializeActionRequest(req, extraLoggingInfo),
         error: err,
         http_code: HASURA_ACTION_ERROR_STATUS
       });
@@ -151,23 +158,28 @@ export const actionHandler: Handler = (req, res) => {
     });
 };
 
-function serializeActionRequest(req: Request): any {
+type ExtraLoggingInfo = {
+  readonly startTime: Date
+};
+function serializeActionRequest(req: Request, info: ExtraLoggingInfo): any {
   const payload = req.body as ActionPayload;
 
   return {
     action_name: payload.action.name,
     session_variables: payload.session_variables,
     request_headers: req.headers,
-    request_body: payload.input
+    request_body: payload.input,
+    latency: new Date().getTime() - info.startTime.getTime()
   };
 }
 
-function serializeTriggerRequest(req: Request): any {
+function serializeTriggerRequest(req: Request, info: ExtraLoggingInfo): any {
   const body = req.body as EventTriggerPayload;
 
   return {
     request_body: req.body,
     request_header: req.headers,
-    trigger_name: body.trigger.name
+    trigger_name: body.trigger.name,
+    latency: new Date().getTime() - info.startTime.getTime()
   };
 }
