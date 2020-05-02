@@ -3,6 +3,9 @@
     "moduleResolution": "node",
     "module": "commonjs",
     "target": "es6",
+    "types": [
+      "node"
+    ],
     "lib": [
       "es2017"
     ],
@@ -23,7 +26,6 @@
     "src"
   ],
   "exclude": [
-    "**/node_modules",
-    "__tests__"
+    "**/node_modules"
   ]
 }

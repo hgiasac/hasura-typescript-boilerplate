@@ -1,8 +1,5 @@
 export const gqlQueryResolver = {
-  hello: (): string => {
-
-    return "world";
-  },
+  hello: (): string => "world"
 };
 
 export const gqlMutationResolver = {

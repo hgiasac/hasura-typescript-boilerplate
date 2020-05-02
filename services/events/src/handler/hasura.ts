@@ -1,3 +1,4 @@
+/* eslint-disable id-blacklist */
 import { Handler, Request } from "express";
 import actions from "../actions";
 import { ActionPayload } from "../actions/types";
@@ -13,10 +14,14 @@ import {
 } from "../shared/types";
 
 export const eventHandler: Handler = (req, res) => {
+  const extraLoggingInfo = {
+    startTime: new Date()
+  };
+
   const body = req.body as EventTriggerPayload;
 
   const childLogger = logger.child({
-    type: "trigger",
+    type: "trigger"
   });
 
   if (!body || !body.trigger || !body.trigger.name) {
@@ -25,9 +30,9 @@ export const eventHandler: Handler = (req, res) => {
     childLogger.log({
       error,
       level: LOG_LEVEL_WARN,
-      ...serializeTriggerRequest(req),
+      ...serializeTriggerRequest(req, extraLoggingInfo),
       message: error.message,
-      http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS,
+      http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS
     });
 
     return res.status(400)
@@ -45,8 +50,8 @@ export const eventHandler: Handler = (req, res) => {
       error,
       message: error.message,
       level: LOG_LEVEL_WARN,
-      ...serializeTriggerRequest(req),
-      http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS,
+      ...serializeTriggerRequest(req, extraLoggingInfo),
+      http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS
     });
 
     return res.status(HASURA_EVENT_TRIGGER_ERROR_STATUS)
@@ -54,13 +59,13 @@ export const eventHandler: Handler = (req, res) => {
 
   }
 
-  return ev(req, body)
+  return ev({ request: req, logger: childLogger }, body)
     .then((result) => {
 
       childLogger.info(`executed trigger ${body.trigger.name} successfully`, {
-        ...serializeTriggerRequest(req),
+        ...serializeTriggerRequest(req, extraLoggingInfo),
         response: env.DEBUG ? result : undefined,
-        http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS,
+        http_code: HASURA_EVENT_TRIGGER_SUCCESS_STATUS
       });
 
       return res.status(HASURA_EVENT_TRIGGER_SUCCESS_STATUS)
@@ -69,9 +74,9 @@ export const eventHandler: Handler = (req, res) => {
     .catch((err) => {
 
       logger.error(err.message, {
-        ...serializeTriggerRequest(req),
+        ...serializeTriggerRequest(req, extraLoggingInfo),
         error: err,
-        http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS,
+        http_code: HASURA_EVENT_TRIGGER_ERROR_STATUS
       });
 
       return res.status(HASURA_EVENT_TRIGGER_ERROR_STATUS)
@@ -83,7 +88,11 @@ export const eventHandler: Handler = (req, res) => {
 };
 
 export const actionHandler: Handler = (req, res) => {
-  const body = req.body as ActionPayload;
+  const extraLoggingInfo = {
+    startTime: new Date()
+  };
+
+  const body = <ActionPayload>req.body;
 
   const childLogger = logger.child({
     type: "action"
@@ -96,7 +105,7 @@ export const actionHandler: Handler = (req, res) => {
       error,
       payload: req.body,
       request_headers: req.headers,
-      http_code: HASURA_ACTION_ERROR_STATUS,
+      http_code: HASURA_ACTION_ERROR_STATUS
     });
 
     return res.status(HASURA_ACTION_ERROR_STATUS)
@@ -112,9 +121,9 @@ export const actionHandler: Handler = (req, res) => {
     };
 
     childLogger.warn(error.message, {
-      ...serializeActionRequest(req),
+      ...serializeActionRequest(req, extraLoggingInfo),
       error,
-      http_code: HASURA_ACTION_ERROR_STATUS,
+      http_code: HASURA_ACTION_ERROR_STATUS
     });
 
     return res.status(HASURA_ACTION_ERROR_STATUS)
@@ -126,18 +135,18 @@ export const actionHandler: Handler = (req, res) => {
     .then((result) => {
 
       childLogger.info(`executed ${body.action.name} successfully`, {
-        ...serializeActionRequest(req),
+        ...serializeActionRequest(req, extraLoggingInfo),
         response: env.DEBUG ? result : undefined,
-        http_code: HASURA_ACTION_SUCCESS_STATUS,
+        http_code: HASURA_ACTION_SUCCESS_STATUS
       });
 
       return res.status(HASURA_ACTION_SUCCESS_STATUS).json(result);
     })
     .catch((err) => {
       logger.error(err.message, {
-        ...serializeActionRequest(req),
+        ...serializeActionRequest(req, extraLoggingInfo),
         error: err,
-        http_code: HASURA_ACTION_ERROR_STATUS,
+        http_code: HASURA_ACTION_ERROR_STATUS
       });
 
       return res.status(HASURA_ACTION_ERROR_STATUS)
@@ -148,7 +157,10 @@ export const actionHandler: Handler = (req, res) => {
     });
 };
 
-function serializeActionRequest(req: Request) {
+type ExtraLoggingInfo = {
+  readonly startTime: Date
+};
+function serializeActionRequest(req: Request, info: ExtraLoggingInfo): any {
   const payload = req.body as ActionPayload;
 
   return {
@@ -156,15 +168,17 @@ function serializeActionRequest(req: Request) {
     session_variables: payload.session_variables,
     request_headers: req.headers,
     request_body: payload.input,
+    latency: new Date().getTime() - info.startTime.getTime()
   };
 }
 
-function serializeTriggerRequest(req: Request) {
+function serializeTriggerRequest(req: Request, info: ExtraLoggingInfo): any {
   const body = req.body as EventTriggerPayload;
 
   return {
     request_body: req.body,
     request_header: req.headers,
     trigger_name: body.trigger.name,
-  }
+    latency: new Date().getTime() - info.startTime.getTime()
+  };
 }

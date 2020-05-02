@@ -1,3 +1,6 @@
+/* eslint-disable functional/no-this-expression */
+/* eslint-disable functional/immutable-data */
+/* eslint-disable functional/no-class */
 import { GraphQLField, GraphQLList, GraphQLNonNull, GraphQLScalarType } from "graphql";
 import { SchemaDirectiveVisitor } from "graphql-tools";
 import { MaxLength, MinLength } from "../types/Validators";
@@ -8,17 +11,17 @@ export const minLengthDirectiveSchema = `
 `;
 
 export class MinLengthDirective extends SchemaDirectiveVisitor {
-  public visitInputFieldDefinition(field: any) {
+  public visitInputFieldDefinition(field: any): void {
     this.wrapType(field);
   }
 
-  public visitFieldDefinition(field: any) {
+  public visitFieldDefinition(field: any): void {
     this.wrapType(field);
   }
 
   // Replace field.type with a custom GraphQLScalarType that enforces the
   // length restriction.
-  public wrapType(field: GraphQLField<any, any>) {
+  public wrapType(field: GraphQLField<any, any>): void {
     if (!this.args.value) {
       return;
     }
@@ -42,22 +45,22 @@ export const maxLengthDirectiveSchema = `
 `;
 
 export class MaxLengthDirective extends SchemaDirectiveVisitor {
-  public visitInputFieldDefinition(field) {
+  public visitInputFieldDefinition(field): void {
     this.wrapType(field);
   }
 
-  public visitFieldDefinition(field) {
+  public visitFieldDefinition(field): void {
     this.wrapType(field);
   }
 
-    // Replace field.type with a custom GraphQLScalarType that enforces the
-    // length restriction.
-  public wrapType(field) {
+  // Replace field.type with a custom GraphQLScalarType that enforces the
+  // length restriction.
+  public wrapType(field): void {
     if (!this.args.value) {
       return;
     }
     if (field.type instanceof GraphQLNonNull &&
-          field.type.ofType instanceof GraphQLScalarType) {
+      field.type.ofType instanceof GraphQLScalarType) {
       field.type = new GraphQLNonNull(MaxLength(this.args.value).type);
 
     } else if (field.type instanceof GraphQLScalarType) {
@@ -75,5 +78,5 @@ export const validatorDirectiveSchema = `
 
 export const validatorDirectiveResolver = {
   minLength: MinLengthDirective,
-  maxLength: MaxLengthDirective,
+  maxLength: MaxLengthDirective
 };

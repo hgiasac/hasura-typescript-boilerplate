@@ -5,54 +5,54 @@ import { HasuraRole } from "../types";
 
 export type UserID = string;
 
-export interface IBaseUserInput {
-  email: string;
-  emailVerified: boolean;
-  firstName: string;
-  lastName: string;
-}
+export type BaseUserInput = {
+  readonly email: string
+  readonly emailVerified: boolean
+  readonly firstName: string
+  readonly lastName: string
+};
 
-export interface IChangePasswordInput {
-  firebaseId: string;
-  password: string;
-}
+export type ChangePasswordInput = {
+  readonly firebaseId: string
+  readonly password: string
+};
 
-export interface ICreateFirebaseUserInput extends IBaseUserInput {
-  password: string;
-}
+export type CreateFirebaseUserInput = BaseUserInput & {
+  readonly password: string
+};
 
-export interface ICreateUserInput extends IBaseUserInput {
-  role: HasuraRole;
-  firebaseId: string;
-  createdBy: string;
-  updatedBy: string;
-  deleted: boolean;
-}
+export type CreateUserInput = BaseUserInput & {
+  readonly role: HasuraRole
+  readonly firebaseId: string
+  readonly createdBy: string
+  readonly updatedBy: string
+  readonly deleted: boolean
+};
 
-export interface IAuthUser extends ICreateUserInput {
-  id: UserID;
-  createdAt: string;
-  updatedAt: string;
-}
+export type AuthUser = CreateUserInput & {
+  readonly id: UserID
+  readonly createdAt: string
+  readonly updatedAt: string
+};
 
 type CreateUserFunc =
-  (input: ICreateUserInput & { password: string }) => Promise<IAuthUser>;
-type FindUserByFirebaseIdFunc = (id: string) => Promise<IAuthUser>;
-type ChangePasswordFunc = (input: IChangePasswordInput) => Promise<auth.UserRecord>;
+  (input: CreateUserInput & { readonly password: string }) => Promise<AuthUser>;
+type FindUserByFirebaseIdFunc = (id: string) => Promise<AuthUser>;
+type ChangePasswordFunc = (input: ChangePasswordInput) => Promise<auth.UserRecord>;
 
-export interface IFirebaseAuth {
-  createUser: CreateUserFunc;
-  findUserByFirebaseId: FindUserByFirebaseIdFunc;
-  changePassword: ChangePasswordFunc;
-}
+export type IFirebaseAuth = {
+  readonly createUser: CreateUserFunc
+  readonly findUserByFirebaseId: FindUserByFirebaseIdFunc
+  readonly changePassword: ChangePasswordFunc
+};
 
-export function createFirebaseUser(input: ICreateFirebaseUserInput): Promise<auth.UserRecord> {
+export function createFirebaseUser(input: CreateFirebaseUserInput): Promise<auth.UserRecord> {
   return getFirebaseApp()
     .auth().createUser({
       email: input.email,
       emailVerified: input.emailVerified,
       displayName: `${input.firstName} ${input.lastName}`,
-      password: input.password,
+      password: input.password
     });
 }
 
@@ -100,7 +100,7 @@ const createUserWithFirebase: CreateUserFunc = async (input) =>
       role: input.role,
       createdBy: input.createdBy,
       updatedBy: input.updatedBy,
-      deleted: input.deleted || false,
+      deleted: input.deleted || false
     }))
     .then(createUser);
 
@@ -119,22 +119,20 @@ const findUserByFirebaseId: FindUserByFirebaseIdFunc = async (id) => {
     }
   `;
 
-  return requestGQL<{ users: IAuthUser[] }>({
+  return requestGQL<{ readonly users: readonly AuthUser[] }>({
     query,
     variables: { id },
     isAdmin: true
   }).then((rs) => rs.users[0]);
 };
 
-const changePassword: ChangePasswordFunc = async (input) => {
-  return getFirebaseApp().auth()
-    .updateUser(input.firebaseId, {
-      password: input.password
-    });
-}
+const changePassword: ChangePasswordFunc = (input) => getFirebaseApp().auth()
+  .updateUser(input.firebaseId, {
+    password: input.password
+  });
 
 export const FirebaseAuth: IFirebaseAuth = {
   findUserByFirebaseId,
   changePassword,
-  createUser: createUserWithFirebase,
+  createUser: createUserWithFirebase
 };

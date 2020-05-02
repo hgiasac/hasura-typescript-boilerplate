@@ -6,28 +6,35 @@ import {
   HASURA_ROLE_ANONYMOUS,
   XHasuraRole,
   XHasuraUserID,
-  XHasuraFirebaseID,
+  XHasuraFirebaseID
 } from "../shared/types";
+import { logger } from "../shared/logger";
+import * as env from "../shared/env";
 
-export async function authenticationHandler(req: Request, res: Response) {
+export async function authenticationHandler(req: Request, res: Response): Promise<Response<any>> {
+
+  const start = new Date();
 
   const token = req.get(AuthorizationHeader);
   const anonymous = {
-    [XHasuraRole]: HASURA_ROLE_ANONYMOUS,
+    [XHasuraRole]: HASURA_ROLE_ANONYMOUS
   };
 
-  // TODO: verify token
-  if (!token) {
-    console.log("empty authorization token");
-
-    return res.json(anonymous);
-  }
+  const childLogger = logger.child({
+    type: "auth"
+  });
 
   try {
     const parts = token.split(" ");
 
-    if (parts.length < 2 || parts[0] !== AuthBearer) {
-      console.log("invalid authorization token:", token);
+    if (!token || parts.length < 2 || parts[0] !== AuthBearer) {
+
+      childLogger.warn("invalid authorization token", {
+        request_headers: req.headers,
+        session_variables: anonymous,
+        http_code: 200,
+        latency: new Date().getTime() - start.getTime()
+      });
 
       return res.json(anonymous);
     }
@@ -36,23 +43,61 @@ export async function authenticationHandler(req: Request, res: Response) {
     const user = await FirebaseAuth.findUserByFirebaseId(decodedToken.uid);
 
     if (!user) {
-      // the user is registered on firebase, we can let client side create user by firebase id
-      return res.json({
+
+      const noUserData = {
         [XHasuraRole]: HASURA_ROLE_ANONYMOUS,
-        [XHasuraFirebaseID]: decodedToken.uid,
+        [XHasuraFirebaseID]: decodedToken.uid
+      };
+
+      childLogger.error("user not found, but firebase user exists", {
+        request_headers: req.headers,
+        session_variables: noUserData,
+        http_code: 200,
+        latency: new Date().getTime() - start.getTime()
       });
+
+      // the user is registered on firebase, we can let client side create user by firebase id
+      return res.json(noUserData);
     }
+
+    const jsonData = {
+      [XHasuraUserID]: user.id,
+      [XHasuraRole]: user.role
+    };
 
     if (user.deleted) {
-      throw new Error("User is deleted. Please contact administator");
+      childLogger.warn("User is deleted.", {
+        request_headers: env.DEBUG ? req.headers : {},
+        session_variables: jsonData,
+        http_code: 200,
+        latency: new Date().getTime() - start.getTime()
+      });
+
+      return res.json(anonymous);
+
     }
 
-    return res.json({
-      [XHasuraUserID]: user.id,
-      [XHasuraRole]: user.role,
+    childLogger.info("finish authentication", {
+      request_headers: env.DEBUG ? req.headers : {},
+      session_variables: jsonData,
+      http_code: 200,
+      latency: new Date().getTime() - start.getTime()
     });
+
+    return res.json(jsonData);
   } catch (err) {
     console.error("authentication failure", err);
+
+    childLogger.error("authentication failure", {
+      request_headers: env.DEBUG ? req.headers : {},
+      session_variables: anonymous,
+      http_code: 200,
+      latency: new Date().getTime() - start.getTime(),
+      error: {
+        message: err.message,
+        ...err
+      }
+    });
 
     return res.status(200).json(anonymous);
   }

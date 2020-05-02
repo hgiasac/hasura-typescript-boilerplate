@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-this-expression */
+/* eslint-disable camelcase */
 import { Request } from "express";
 
 export const AuthorizationHeader = "authorization";
@@ -29,7 +31,7 @@ export const STATUSES = [
   STATUS_ACTIVE,
   STATUS_INACTIVE,
   STATUS_DISABLED,
-  STATUS_DELETED,
+  STATUS_DELETED
 ];
 
 export type Status
@@ -48,24 +50,23 @@ export type GQLRole
   | typeof GQL_ROLE_USER
   | typeof GQL_ROLE_ANONYMOUS;
 
-export interface IGraphQLContext {
-  request: Request;
-}
+export type GraphQLContext = {
+  readonly request: Request
+};
 
 // event trigger payload
 // https://hasura.io/docs/1.0/graphql/manual/event-triggers/payload.html
-export interface IStringObject { [key: string]: string; }
-export interface IAnyObject { [key: string]: any; }
-export interface IBaseSessionVariables {
-  [XHasuraRole]: HasuraRole;
-  [key: string]: string;
-}
+export type StringObject = { readonly [key: string]: string };
+export type AnyObject = { readonly [key: string]: any };
+export type BaseSessionVariables = {
+  readonly [XHasuraRole]: HasuraRole
+};
 
-export interface IAuthSessionVariables extends IBaseSessionVariables {
-  [XHasuraUserID]: string;
-}
+export type AuthSessionVariables = BaseSessionVariables & {
+  readonly [XHasuraUserID]: string
+};
 
-export type SessionVariables<T = IBaseSessionVariables> = T | null;
+export type SessionVariables<T = BaseSessionVariables> = T | null;
 
 export const INSERT = "INSERT";
 export const UPDATE = "UPDATE";
@@ -78,78 +79,76 @@ export type HasuraEventTriggerOpName
   | typeof DELETE
   | typeof MANUAL;
 
-export interface IHasuraEventTriggerEvent<
+export type IHasuraEventTriggerEvent<
   OP extends HasuraEventTriggerOpName,
-  O = IAnyObject,
-  N = IAnyObject,
-  S = SessionVariables
-  > {
-  session_variables: S;
-  op: OP;
-  data: {
-    old: O;
-    new: N;
+  O = AnyObject,
+  N = AnyObject,
+  S = SessionVariables> = {
+    readonly session_variables: S
+    readonly op: OP
+    readonly data: {
+      readonly old: O
+      readonly new: N
+    }
   };
-}
 
 export type HasuraEventTriggerEvent = IHasuraEventTriggerEvent<HasuraEventTriggerOpName>;
 
-export type HasuraEventTriggerInsert<N = IAnyObject> =
+export type HasuraEventTriggerInsert<N = AnyObject> =
   IHasuraEventTriggerEvent<typeof INSERT, null, N>;
 
-export type HasuraEventTriggerUpdate<N = IAnyObject> =
+export type HasuraEventTriggerUpdate<N = AnyObject> =
   IHasuraEventTriggerEvent<typeof UPDATE, N, N>;
 
-export type HasuraEventTriggerDelete<N = IAnyObject> =
+export type HasuraEventTriggerDelete<N = AnyObject> =
   IHasuraEventTriggerEvent<typeof DELETE, N, null>;
 
-export type HasuraEventTriggerManual<N = IAnyObject> =
+export type HasuraEventTriggerManual<N = AnyObject> =
   IHasuraEventTriggerEvent<typeof MANUAL, N, null>;
 
-export interface IHasuraEventTriggerInfo<N = string> {
-  name: N;
-}
+export type HasuraEventTriggerInfo<N = string> = {
+  readonly name: N
+};
 
-export interface IHasuraEventTriggerTable {
-  schema: string;
-  name: string;
-}
+export type HasuraEventTriggerTable = {
+  readonly schema: string
+  readonly name: string
+};
 
-export interface IHasuraEventTriggerPayload<
+export type HasuraEventTriggerPayload<
   E extends IHasuraEventTriggerEvent<HasuraEventTriggerOpName>,
-  N = string
-  > {
-  event: E;
-  created_at: string;
-  id: string;
-  trigger: IHasuraEventTriggerInfo<N>;
-  table: IHasuraEventTriggerTable;
-}
+  N = string> = {
+    readonly event: E
+    readonly created_at: string
+    readonly id: string
+    readonly trigger: HasuraEventTriggerInfo<N>
+    readonly table: HasuraEventTriggerTable
+  };
 
 // action handler interface
 // https://hasura.io/docs/1.0/graphql/manual/actions/action-handlers.html#action-handlers
-export interface IHasuraActionPayload<A = string, T = IAnyObject, S = SessionVariables> {
-  action: {
-    name: A;
-  };
-  session_variables: S;
-  input: T;
-}
+export type HasuraActionPayload<A = string, T = AnyObject, S = SessionVariables> = {
+  readonly action: {
+    readonly name: A
+  }
+  readonly session_variables: S
+  readonly input: T
+};
 
-export interface IHasuraActionErrorResponse {
-  message: string;
-  code?: string;
-}
+export type HasuraActionErrorResponse = {
+  readonly message: string
+  readonly code?: string
+};
 
-export class HasuraActionError extends Error implements IHasuraActionErrorResponse {
+// eslint-disable-next-line functional/no-class
+export class HasuraActionError extends Error implements HasuraActionErrorResponse {
 
-  public code?: string;
-  public message: string;
-  public details?: any;
+  public readonly code?: string;
+  public readonly message: string;
+  public readonly details?: any;
 
   constructor(
-    { message, code, details }: IHasuraActionErrorResponse
-      & { details?: any }) {
+    { message, code, details }: HasuraActionErrorResponse & { readonly details?: any }) {
     super(message);
     this.message = message;
     this.code = code;
@@ -164,6 +163,6 @@ export const HASURA_ACTION_ERROR_STATUS = 400;
 export const HASURA_EVENT_TRIGGER_SUCCESS_STATUS = 200;
 export const HASURA_EVENT_TRIGGER_ERROR_STATUS = 400;
 
-export interface IRequestHeaders {
-  [key: string]: string;
-}
+export type RequestHeaders = {
+  readonly [key: string]: string
+};

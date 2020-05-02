@@ -12,10 +12,10 @@ export const CreateUserValidator = Joi.object({
 
   role: RoleValidator.required(),
   createdBy: Joi.string().uuid(),
-  updatedBy: Joi.string().uuid(),
+  updatedBy: Joi.string().uuid()
 });
 
 export const ChangeUserPasswordValidator = Joi.object({
   userId: Joi.string().uuid().required(),
-  password: PasswordValidator,
+  password: PasswordValidator
 });

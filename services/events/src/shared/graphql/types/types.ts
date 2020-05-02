@@ -1,21 +1,25 @@
 import { GraphQLScalarType } from "graphql";
 
-export interface IGraphQLScalarType {
-  name: string;
-  type: GraphQLScalarType;
-}
+export type IGraphQLScalarType = {
+  readonly name: string
+  readonly type: GraphQLScalarType
+};
 
-export interface ICreateCustomScalarsOutput {
-  schema: string;
-  resolver: { [key: string]: GraphQLScalarType };
-}
+export type ICreateCustomScalarsOutput = {
+  readonly schema: string
+  readonly resolver: { readonly [key: string]: GraphQLScalarType }
+};
 
-export function createCustomScalars(inputs: IGraphQLScalarType[]) {
+export type CustomScalar = {
+  readonly schema: string
+  readonly resolver: {}
+};
+export function createCustomScalars(inputs: readonly IGraphQLScalarType[]): CustomScalar {
   return inputs.reduce((acc, o) => ({
-    schema: acc.schema + `scalar ${o.name}\n`,
+    schema: `${acc.schema}scalar ${o.name}\n`,
     resolver: {
       ...acc.resolver,
-      [o.name]: o.type,
+      [o.name]: o.type
     }
   }), {
     schema: "",

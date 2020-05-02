@@ -1,3 +1,4 @@
+/* eslint-disable id-blacklist */
 import { FirebaseAuth } from "../../shared/auth/firebase";
 import { VALIDATION_ERROR } from "../../shared/error";
 import { requestGQL } from "../../shared/http-client";
@@ -17,7 +18,7 @@ export const createUserHandler: CreateUserAction = async (_, payload) => {
     throw new HasuraActionError({
       code: VALIDATION_ERROR,
       message: validatedResult.error.message,
-      details: validatedResult.error.details,
+      details: validatedResult.error.details
     });
   }
 
@@ -39,26 +40,26 @@ export const createUserHandler: CreateUserAction = async (_, payload) => {
   }).then((rs) => rs.users_aggregate.aggregate.count > 0);
 
   if (isExisted) {
-    const message = "Email is existed: " + input.data.email;
+    const message = `Email is existed: ${input.data.email}`;
 
     throw new HasuraActionError({
       message,
       code: VALIDATION_ERROR,
-      details: message,
+      details: message
     });
   }
 
   const user = await FirebaseAuth.createUser({
     ...validatedResult.value,
     createdBy: userID,
-    updatedBy: userID,
+    updatedBy: userID
   });
 
   return {
     ...user,
-    password: undefined,
+    password: undefined
   };
-}
+};
 
 // change user password
 export const changeUserPassword: ChangeUserPasswordAction = async (_, payload) => {
@@ -70,7 +71,7 @@ export const changeUserPassword: ChangeUserPasswordAction = async (_, payload) =
     throw new HasuraActionError({
       code: VALIDATION_ERROR,
       message: validatedResult.error.message,
-      details: validatedResult.error.details,
+      details: validatedResult.error.details
     });
   }
 
@@ -85,16 +86,16 @@ export const changeUserPassword: ChangeUserPasswordAction = async (_, payload) =
     }
   `;
 
-  const response = await requestGQL<{ users: { firebaseId: string }[] }>({
+  const response = await requestGQL<{ readonly users: readonly { readonly firebaseId: string }[] }>({
     query,
-    variables: { id: value.userId },
+    variables: { id: value.userId }
   });
 
   if (!response.users.length) {
     throw new HasuraActionError({
       code: VALIDATION_ERROR,
       message: "User not found",
-      details: "User not found: " + value.userId,
+      details: `User not found: ${value.userId}`
     });
   }
 
@@ -102,18 +103,16 @@ export const changeUserPassword: ChangeUserPasswordAction = async (_, payload) =
 
   await FirebaseAuth.changePassword({
     firebaseId,
-    password: value.password,
+    password: value.password
   });
 
   return {
-    userId: value.userId,
+    userId: value.userId
   };
-}
+};
 
 // mock mutation, workaround issue in react admin provider
 // https://stackoverflow.com/questions/60088596/cannot-read-property-name-of-null-react-admin
-export const helloHandler: HelloAction = async () => {
-  return {
-    hello: "Hello world!",
-  };
-}
+export const helloHandler: HelloAction = () => Promise.resolve({
+  hello: "Hello world!"
+});

@@ -3,20 +3,20 @@ import { getFirebaseApp } from "../components/firebase";
 import { requestGQL } from "../http-client";
 import { HasuraRole } from "../types";
 
-export interface IAuthUser {
-  id: string;
-  email: string;
-  role: HasuraRole;
-  deleted: boolean;
-}
+export type AuthUser = {
+  readonly id: string
+  readonly email: string
+  readonly role: HasuraRole
+  readonly deleted: boolean
+};
 
 type VerifyTokenFunc = (token: string) => Promise<auth.DecodedIdToken>;
-type FindUserByFirebaseIdFunc = (id: string) => Promise<IAuthUser>;
+type FindUserByFirebaseIdFunc = (id: string) => Promise<AuthUser>;
 
-export interface IFirebaseAuth {
-  verifyToken: VerifyTokenFunc;
-  findUserByFirebaseId: FindUserByFirebaseIdFunc;
-}
+export type IFirebaseAuth = {
+  readonly verifyToken: VerifyTokenFunc
+  readonly findUserByFirebaseId: FindUserByFirebaseIdFunc
+};
 
 const verifyToken: VerifyTokenFunc = (token) =>
   getFirebaseApp().auth().verifyIdToken(token);
@@ -36,7 +36,7 @@ const findUserByFirebaseId: FindUserByFirebaseIdFunc = async (firebaseId) => {
     }
   `;
 
-  return requestGQL<{ users: IAuthUser[] }>({
+  return requestGQL<{ readonly users: readonly AuthUser[] }>({
     query,
     variables: { firebaseId },
     isAdmin: true
@@ -45,5 +45,5 @@ const findUserByFirebaseId: FindUserByFirebaseIdFunc = async (firebaseId) => {
 
 export const FirebaseAuth: IFirebaseAuth = {
   verifyToken,
-  findUserByFirebaseId,
+  findUserByFirebaseId
 };
