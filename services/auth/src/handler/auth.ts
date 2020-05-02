@@ -1,19 +1,21 @@
 import { Request, Response } from "express";
 import { logger } from "../shared/logger";
 import * as env from "../shared/env";
-const AuthenticationHeader = "authorization";
-const AnonymousRole = "anonymous";
-const AdminRole = "admin";
-const XHasuraRole = "X-Hasura-Role";
-const XHasuraUserID = "X-Hasura-User-Id";
+import {
+  AuthorizationHeader,
+  XHasuraRole,
+  HASURA_ROLE_ANONYMOUS,
+  XHasuraUserID,
+  HASURA_ROLE_ADMIN
+} from "../shared/types";
 
 export function authenticationHandler(req: Request, res: Response): Response<any> {
 
   const start = new Date();
 
-  const token = req.get(AuthenticationHeader);
+  const token = req.get(AuthorizationHeader);
   const anonymous = {
-    [XHasuraRole]: AnonymousRole
+    [XHasuraRole]: HASURA_ROLE_ANONYMOUS
   };
 
   const childLogger = logger.child({
@@ -34,7 +36,7 @@ export function authenticationHandler(req: Request, res: Response): Response<any
 
   const jsonData = {
     [XHasuraUserID]: "1",
-    [XHasuraRole]: AdminRole
+    [XHasuraRole]: HASURA_ROLE_ADMIN
   };
 
   childLogger.info("finish authentication", {
