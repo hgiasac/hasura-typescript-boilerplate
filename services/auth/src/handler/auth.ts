@@ -44,5 +44,5 @@ export function authenticationHandler(req: Request, res: Response): Response<any
     latency: new Date().getTime() - start.getTime()
   });
 
-  return res.json();
+  return res.json(jsonData);
 }
