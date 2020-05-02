@@ -86,6 +86,7 @@ module.exports = {
                 }
             }
         ],
+        "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/class-name-casing": "error",
         "@typescript-eslint/consistent-type-assertions": "off",
         "@typescript-eslint/indent": [
@@ -147,7 +148,7 @@ module.exports = {
             "error",
             "always"
         ],
-        "camelcase": "error",
+        "camelcase": "off",
         "class-methods-use-this": "error",
         "comma-dangle": "error",
         "complexity": "off",
