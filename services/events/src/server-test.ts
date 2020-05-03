@@ -1,12 +1,10 @@
+import { json } from "body-parser";
 import * as express from "express";
-import { newApolloServer } from "./graphql";
 import { newRouter } from "./handler";
 
-export const newServer = (): Promise<express.Express> => {
-  const app = express()
-    .use(newRouter());
-
-  newApolloServer().applyMiddleware({ app });
-
-  return Promise.resolve(app);
-};
+export const newServer = (): Promise<express.Express> =>
+  Promise.resolve(
+    express()
+      .use(json())
+      .use(newRouter())
+  );
