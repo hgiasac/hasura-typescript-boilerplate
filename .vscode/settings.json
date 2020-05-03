@@ -1,0 +1,6 @@
+{
+  "eslint.workingDirectories": [
+    "./services/firebase-functions/functions",
+    "./services/functions"
+  ]
+}

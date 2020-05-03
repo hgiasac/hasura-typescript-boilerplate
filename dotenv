@@ -1,0 +1,17 @@
+ROOT_DOMAIN=localhost
+HASURA_GRAPHQL_ADMIN_SECRET=hasura
+EVENT_TRIGGER_URL=
+ACTION_URL=
+
+# Accepts from all domain
+#HASURA_GRAPHQL_CORS_DOMAIN="*"
+
+# Postgres
+POSTGRES_HOST=postgres
+POSTGRES_USER=postgres
+POSTGRES_DB=postgres
+POSTGRES_PASSWORD=postgres
+
+# Google certificate
+FIREBASE_PROJECT_ID=sample-project
+GCP_PROJECT=

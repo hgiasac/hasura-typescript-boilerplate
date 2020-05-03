@@ -1,0 +1,19 @@
+version: "3.7"
+
+# yaml refs
+x-refs:
+  common_config: &common_config
+    logging:
+      driver: gcplogs
+      options: 
+        gcp-project: ${GCP_PROJECT}
+
+services:
+  postgres:
+    <<: *common_config
+
+  data:
+    environment:
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false" 
+      EVENT_TRIGGER_URL: ${EVENT_TRIGGER_URL}
+      ACTION_URL: ${ACTION_URL}

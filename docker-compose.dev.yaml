@@ -1,0 +1,32 @@
+version: "3.7"
+
+# yaml refs
+x-refs:
+  common_config: &common_config
+    restart: always
+    env_file:
+    - .env
+
+services:
+
+  data:
+    environment:
+      HASURA_GRAPHQL_DEV_MODE: "true"      
+      EVENT_TRIGGER_URL: http://functions:9000
+      ACTION_URL: http://functions:9000
+     
+  functions:
+    <<: *common_config
+    build: 
+      context: ./services/functions
+      dockerfile: Dockerfile_dev
+      network: host
+    ports:
+    - "9000"
+    depends_on:
+    - postgres
+    volumes:
+      - ./services/functions/src:/usr/src/app/src
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
+      DATA_HOST: http://data:8080
