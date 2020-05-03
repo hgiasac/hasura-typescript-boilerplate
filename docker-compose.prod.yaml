@@ -33,7 +33,3 @@ services:
   actions:
     <<: *common_config
     <<: *api_config
-
-  remote_schemas:
-    <<: *common_config
-    <<: *api_config
