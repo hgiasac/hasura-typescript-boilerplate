@@ -1,5 +1,5 @@
 import { Response, Router } from "express";
-import { eventHandler } from "./hasura";
+import { actionHandler } from "./hasura";
 
 const healthHandler = (_, res: Response): Response =>
   res.status(200).send("OK");
@@ -7,7 +7,7 @@ const healthHandler = (_, res: Response): Response =>
 export function newRouter(): Router {
   const router = Router();
 
-  router.post("/events", eventHandler);
+  router.post("/actions", actionHandler);
   router.get("/health", healthHandler);
 
   return router;

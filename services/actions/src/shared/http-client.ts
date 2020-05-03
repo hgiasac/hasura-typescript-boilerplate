@@ -3,7 +3,7 @@
 /* eslint-disable functional/no-class */
 import Axios from "axios";
 import { DATA_URL, HASURA_GRAPHQL_ADMIN_SECRET } from "./env";
-import { ContentType, ContentTypeJson, XHasuraAdminSecret, HasuraError } from "./types";
+import { ContentType, ContentTypeJson, XHasuraAdminSecret, HasuraActionError } from "./types";
 
 export type MutationResponse<T> = {
   readonly affected_rows: number
@@ -69,14 +69,14 @@ export const requestGQL = <T = any>(options: GQLRequestOptions): Promise<T> => {
     headers: options.headers
   }).then((resp) => {
     if (resp.status !== 200) {
-      throw new HasuraError({
+      throw new HasuraActionError({
         message: resp.statusText,
         details: resp.data
       });
     }
 
     if (resp.data.errors) {
-      throw new HasuraError({
+      throw new HasuraActionError({
         code: resp.data.errors[0].code,
         message: resp.data.errors[0].message,
         details: resp.data.errors[0].extensions

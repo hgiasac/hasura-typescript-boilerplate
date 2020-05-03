@@ -18,12 +18,15 @@
 - [React Admin](https://github.com/hgiasac/ra-hasura-typescript-boilerplate/tree/auth-firebase)
 - [Next.js + Tailwind](https://github.com/hgiasac/hasura-next-ts-boilerplate/tree/tailwind-firebase)
 
+4. Extras
+- [With Remote Schemas](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/remote-schemas): From Hasura 1.2.0, remote schema can be replaced with Action. So `remote-schemas` is remove from main branches 
 
 ## Project Structure
 
-- `services/data`: Hasura GraphQL migration 
 - `services/auth`: Authentication webhook
-- `services/events`: Event triggers and GraphQL remote schema service
+- `services/data`: Hasura GraphQL project with migrations 
+- `services/events`: Event triggers 
+- `services/actions`: Hasura actions 
 
 ## Database design and migration
 
@@ -48,7 +51,10 @@ hasura migrate apply --admin-secret  [secret] --endpoint [endpoint]
 - Use Docker with docker-compose
 
 ```bash
+# start development dockers
 make dev
+# because docker caches built images, when changing packages, we need to rebuild containers
+make dev-build
 ```
 
 - For Test/Production environment, use `docker-compose.test.yaml` or `docker-compose.prod.yaml` config file. It requires `gcplogs` driver (read below), or you can remove it if using another logging services

@@ -19,7 +19,7 @@ module.exports = {
     "plugins": [
         "@typescript-eslint",
         "functional",
-        "import"
+        // "import"
     ],
     "parserOptions": {
         "project": "./tsconfig.json",
@@ -43,9 +43,9 @@ module.exports = {
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:functional/external-recommended",
         "plugin:functional/recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings",
-        "plugin:import/typescript"
+        // "plugin:import/errors",
+        // "plugin:import/warnings",
+        // "plugin:import/typescript"
     ],
     "rules": {
         "functional/no-return-void": 0,

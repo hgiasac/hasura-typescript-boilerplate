@@ -21,3 +21,7 @@ services:
       
   events:
     <<: *common_config
+
+  actions:
+    <<: *common_config
+
