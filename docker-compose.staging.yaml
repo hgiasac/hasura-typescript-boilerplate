@@ -21,3 +21,9 @@ services:
       
   events:
     <<: *common_config
+
+  actions:
+    <<: *common_config
+
+  remote_schemas:
+    <<: *common_config

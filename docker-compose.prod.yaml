@@ -8,6 +8,11 @@ x-refs:
       options: 
         gcp-project: ${GCP_PROJECT}
 
+  api_config: &api_config
+    environment:
+      NODE_ENV: production
+
+
 services:
   postgres:
     <<: *common_config
@@ -23,5 +28,12 @@ services:
       
   events:
     <<: *common_config
-    environment:
-      NODE_ENV: production
+    <<: *api_config
+
+  actions:
+    <<: *common_config
+    <<: *api_config
+
+  remote_schemas:
+    <<: *common_config
+    <<: *api_config

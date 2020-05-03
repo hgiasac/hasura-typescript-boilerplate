@@ -9,9 +9,6 @@ export const XHasuraUserID = "x-hasura-user-id";
 export const ContentType = "Content-type";
 export const ContentTypeJson = "application/json";
 
-export const HASURA_EVENT_TRIGGER_SUCCESS_STATUS = 200;
-export const HASURA_EVENT_TRIGGER_ERROR_STATUS = 400;
-
 export const HASURA_ROLE_ADMIN = "admin";
 export const HASURA_ROLE_USER = "user";
 export const HASURA_ROLE_ANONYMOUS = "anonymous";
@@ -53,9 +50,8 @@ export type GQLRole
   | typeof GQL_ROLE_USER
   | typeof GQL_ROLE_ANONYMOUS;
 
-export type RequestHeaders = {
-  readonly [key: string]: string
-};
+export const AuthenticationHeader = "authentication";
+
 export type GraphQLContext = {
   readonly request: Request
 };
@@ -131,20 +127,30 @@ export type HasuraEventTriggerPayload<
     readonly table: HasuraEventTriggerTable
   };
 
-export type HasuraErrorResponse = {
+// action handler interface
+// https://hasura.io/docs/1.0/graphql/manual/actions/action-handlers.html#action-handlers
+export type HasuraActionPayload<A = string, T = AnyObject, S = SessionVariables> = {
+  readonly action: {
+    readonly name: A
+  }
+  readonly session_variables: S
+  readonly input: T
+};
+
+export type HasuraActionErrorResponse = {
   readonly message: string
   readonly code?: string
 };
 
 // eslint-disable-next-line functional/no-class
-export class HasuraError extends Error implements HasuraErrorResponse {
+export class HasuraActionError extends Error implements HasuraActionErrorResponse {
 
   public readonly code?: string;
   public readonly message: string;
   public readonly details?: any;
 
   constructor(
-    { message, code, details }: HasuraErrorResponse & { readonly details?: any }) {
+    { message, code, details }: HasuraActionErrorResponse & { readonly details?: any }) {
     super(message);
     this.message = message;
     this.code = code;
@@ -153,3 +159,12 @@ export class HasuraError extends Error implements HasuraErrorResponse {
 
 }
 
+export const HASURA_ACTION_SUCCESS_STATUS = 200;
+export const HASURA_ACTION_ERROR_STATUS = 400;
+
+export const HASURA_EVENT_TRIGGER_SUCCESS_STATUS = 200;
+export const HASURA_EVENT_TRIGGER_ERROR_STATUS = 400;
+
+export type RequestHeaders = {
+  readonly [key: string]: string
+};
