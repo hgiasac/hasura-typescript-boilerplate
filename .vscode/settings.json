@@ -2,7 +2,6 @@
   "eslint.workingDirectories": [
     "./services/auth",
     "./services/events",
-    "./services/actions",
-    "./services/remote-schemas",
+    "./services/actions"
   ]
 }

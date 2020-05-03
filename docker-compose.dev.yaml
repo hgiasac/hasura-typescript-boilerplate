@@ -29,11 +29,3 @@ services:
       network: host
     volumes:
       - ./services/actions/src:/usr/src/app/src
-
-  remote_schemas:
-    build: 
-      context: ./services/remote-schemas
-      dockerfile: Dockerfile_dev
-      network: host
-    volumes:
-      - ./services/remote-schemas/src:/usr/src/app/src

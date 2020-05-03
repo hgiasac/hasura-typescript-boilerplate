@@ -18,6 +18,8 @@
 - [React Admin](https://github.com/hgiasac/ra-hasura-typescript-boilerplate/tree/auth-firebase)
 - [Next.js + Tailwind](https://github.com/hgiasac/hasura-next-ts-boilerplate/tree/tailwind-firebase)
 
+4. Extras
+- [With Remote Schemas](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/remote-schemas): From Hasura 1.2.0, remote schema can be replaced with Action. So `remote-schemas` is remove from main branches 
 
 ## Project Structure
 
@@ -25,7 +27,6 @@
 - `services/data`: Hasura GraphQL project with migrations 
 - `services/events`: Event triggers 
 - `services/actions`: Hasura actions 
-- `services/remote-schemas`: GraphQL remote schema service
 
 ## Database design and migration
 
