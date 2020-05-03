@@ -6,6 +6,16 @@ x-refs:
     restart: always
     env_file:
     - .env
+  
+  api_config: &api_config
+    ports:
+    - "9000"
+    depends_on:
+    - postgres
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
+      DATA_HOST: http://data:8080
+
 
 services:
 
@@ -20,20 +30,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-
-  auth:
-    <<: *common_config
-    build: 
-      context: ./services/auth
-      network: host
-    ports:
-    - "9000"
-    depends_on:
-    - postgres
-
-    environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
-      DATA_HOST: http://data:8080
 
   data:
     <<: *common_config
@@ -52,23 +48,37 @@ services:
       HASURA_GRAPHQL_MIGRATIONS_DIR: "/hasura-migrations"
       HASURA_GRAPHQL_METADATA_DIR: "/hasura-metadata"
       EVENT_TRIGGER_URL: http://events:9000/events
-      REMOTE_SCHEMA_URL: http://events:9000/graphql
-      ACTION_URL: http://events:9000/actions
+      REMOTE_SCHEMA_URL: http://remote_schemas:9000/graphql
+      ACTION_URL: http://actions:9000/actions
       HASURA_GRAPHQL_AUTH_HOOK: http://auth:9000/verify
       
+  auth:
+    <<: *common_config
+    <<: *api_config
+    build: 
+      context: ./services/auth
+      network: host
+
   events:
     <<: *common_config
+    <<: *api_config
     build: 
       context: ./services/events
       network: host
-    ports:
-    - "9000"
-    depends_on:
-    - postgres
 
-    environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB} 
-      DATA_HOST: http://data:8080
+  actions:
+    <<: *common_config
+    <<: *api_config
+    build: 
+      context: ./services/actions
+      network: host
+
+  remote_schemas:
+    <<: *common_config
+    <<: *api_config
+    build: 
+      context: ./services/remote-schemas
+      network: host
 
 volumes:
   db_data:
