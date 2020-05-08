@@ -65,6 +65,14 @@ make staging
 make prod
 ```
 
+- Stop docker containers. We need `--remove-orphans` argument, because `functions` container isn't in main `docker-compose.yaml` file
+  
+```bash
+make down
+# or
+docker-compose down --remove-orphans
+```
+
 ## Advanced guidelines
 
 - [Production checklist](docs/production-checklist)

@@ -23,7 +23,7 @@ services:
 
   data:
     <<: *common_config
-    image: hasura/graphql-engine:v1.2.0.cli-migrations-v2
+    image: hasura/graphql-engine:v1.2.1.cli-migrations-v2
     volumes:
       - ./services/data/migrations:/hasura-migrations
       - ./services/data/metadata:/hasura-metadata

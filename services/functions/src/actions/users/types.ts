@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/indent */
 
-import { ActionHandler } from "../../shared/hasura/action-wrapper";
-import { HasuraActionPayload } from "../../shared/hasura/types";
 import { CreateUserInput, AuthUser, UserID } from "../../shared/auth/firebase";
+import { HasuraActionExpressHandler, HasuraActionPayload } from "hasura-node-types";
 
 export const CREATE_USER_ACTION = "createUser";
 export const CHANGE_USER_PASSWORD_ACTION = "changeUserPassword";
 export const HELLO_ACTION = "hello";
 
-export type CreateUserAction = ActionHandler<
+export type CreateUserAction = HasuraActionExpressHandler<
   HasuraActionPayload<
-    typeof CREATE_USER_ACTION,
-    { readonly data: CreateUserInput }
+    { readonly data: CreateUserInput },
+    typeof CREATE_USER_ACTION
   >,
   AuthUser>;
 
@@ -24,12 +23,14 @@ export type ChangeUserPasswordOutput = {
   readonly userId: UserID
 };
 
-export type ChangeUserPasswordAction = ActionHandler<
-  HasuraActionPayload<typeof CHANGE_USER_PASSWORD_ACTION, { readonly data: ChangeUserPasswordInput }>,
+export type ChangeUserPasswordAction = HasuraActionExpressHandler<
+  HasuraActionPayload<{
+    readonly data: ChangeUserPasswordInput
+  }, typeof CHANGE_USER_PASSWORD_ACTION>,
   ChangeUserPasswordOutput
 >;
 
-export type HelloAction = ActionHandler<
-  HasuraActionPayload<typeof HELLO_ACTION, {}>,
+export type HelloAction = HasuraActionExpressHandler<
+  HasuraActionPayload<{}, typeof HELLO_ACTION>,
   { readonly hello: string }
 >;

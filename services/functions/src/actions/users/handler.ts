@@ -3,9 +3,8 @@ import { FirebaseAuth } from "../../shared/auth/firebase";
 import { VALIDATION_ERROR } from "../../shared/error";
 import { ChangeUserPasswordAction, CreateUserAction, HelloAction } from "./types";
 import { ChangeUserPasswordValidator, CreateUserValidator } from "./validation";
-import { getActionUserID } from "../../shared/hasura/utils";
-import { HasuraActionError } from "../../shared/hasura/types";
-import { requestGQL } from "../../shared/hasura/http-client";
+import { requestGQL } from "../../shared/http-client";
+import { HasuraActionError, getActionUserID } from "hasura-node-types";
 
 // create user action
 export const createUserHandler: CreateUserAction = async (_, payload) => {

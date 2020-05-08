@@ -11,7 +11,8 @@ services:
 
   data:
     environment:
-      HASURA_GRAPHQL_DEV_MODE: "true"      
+      HASURA_GRAPHQL_DEV_MODE: "true"     
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"  
       EVENT_TRIGGER_URL: http://functions:9000
       ACTION_URL: http://functions:9000
      

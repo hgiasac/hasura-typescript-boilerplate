@@ -1,7 +1,7 @@
 import { auth } from "firebase-admin";
 import { getFirebaseApp } from "../components/firebase";
-import { requestGQL } from "../hasura/http-client";
-import { HasuraRole } from "../hasura/types";
+import { requestGQL } from "../http-client";
+import { HasuraRole } from "../types";
 
 export type UserID = string;
 

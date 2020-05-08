@@ -14,7 +14,7 @@ services:
 
   data:
     environment:
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "false" 
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" 
       EVENT_TRIGGER_URL: ${EVENT_TRIGGER_URL}
       ACTION_URL: ${ACTION_URL}
 

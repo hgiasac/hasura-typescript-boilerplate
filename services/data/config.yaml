@@ -1,6 +1,13 @@
 version: 2
 endpoint: http://localhost:8080
+api_paths:
+  query: v1/query
+  graphql: v1/graphql
+  config: v1alpha1/config
+  pg_dump: v1alpha1/pg_dump
+  version: v1/version
 metadata_directory: metadata
+migrations_directory: migrations
 actions:
   kind: synchronous
   handler_webhook_baseurl: http://events:9000
