@@ -1,5 +1,10 @@
-import { EventTriggerHandlerMap } from "./types";
+import { HasuraEventExpressHandlerMap } from "hasura-node-types";
+import { EventHandler } from "./types";
+
+const helloEvent: EventHandler = () => Promise.resolve({
+  hello: "world"
+});
 
 export default {
-
-} as EventTriggerHandlerMap;
+  hello: helloEvent
+} as HasuraEventExpressHandlerMap;

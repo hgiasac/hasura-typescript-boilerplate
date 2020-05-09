@@ -3,7 +3,7 @@
 /* eslint-disable functional/no-class */
 import Axios from "axios";
 import { DATA_URL, HASURA_GRAPHQL_ADMIN_SECRET } from "./env";
-import { ContentType, ContentTypeJson, XHasuraAdminSecret, HasuraActionError } from "./types";
+import { ContentType, ContentTypeJson, XHasuraAdminSecret, HasuraActionError } from "hasura-node-types";
 
 export type MutationResponse<T> = {
   readonly affected_rows: number

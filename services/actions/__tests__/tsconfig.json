@@ -5,7 +5,6 @@
     "baseUrl": "."
   },
   "include": [
-    "__tests__/*/*.ts",
     "**/*.ts",
     "../src/**/*.ts"
   ]

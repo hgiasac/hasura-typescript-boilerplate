@@ -2,8 +2,7 @@
 import { FirebaseAuth } from "../../shared/auth/firebase";
 import { VALIDATION_ERROR } from "../../shared/error";
 import { requestGQL } from "../../shared/http-client";
-import { HasuraActionError } from "../../shared/types";
-import { getActionUserID } from "../utils";
+import { HasuraActionError, getActionUserID } from "hasura-node-types";
 import { ChangeUserPasswordAction, CreateUserAction, HelloAction } from "./types";
 import { ChangeUserPasswordValidator, CreateUserValidator } from "./validation";
 
