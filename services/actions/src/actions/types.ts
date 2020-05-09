@@ -1,17 +1,4 @@
-import { Request } from "express";
-import { Logger } from "winston";
-import { AnyObject, HasuraActionPayload } from "../shared/types";
+import { HasuraExpressContext } from "hasura-node-types";
+import * as winston from "winston";
 
-export type ActionPayload = HasuraActionPayload;
-
-export type ActionContext = {
-  readonly request: Request
-  readonly logger: Logger
-};
-
-export type ActionHandler<P extends HasuraActionPayload, R = AnyObject> =
-  (ctx: ActionContext, payload: P) => Promise<R>;
-
-export type ActionHandlerMap = {
-  readonly [key: string]: ActionHandler<ActionPayload>
-};
+export type AppContext = HasuraExpressContext<winston.Logger>;
