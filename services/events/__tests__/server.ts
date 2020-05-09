@@ -1,3 +1,4 @@
+import "./common";
 import { newServer } from "../src/server-test";
 
 describe("Server test", () => {

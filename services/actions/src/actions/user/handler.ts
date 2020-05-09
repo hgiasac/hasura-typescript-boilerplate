@@ -1,8 +1,7 @@
 /* eslint-disable id-blacklist */
 import { IChangeProfilePasswordInput, IChangeUserPasswordInput, JwtAuth } from "../../shared/auth/jwt";
 import { VALIDATION_ERROR } from "../../shared/error";
-import { HasuraActionError } from "../../shared/types";
-import { getActionUserID } from "../utils";
+import { HasuraActionError, getActionUserID } from "hasura-node-types";
 import { ChangeProfilePassword, ChangeUserPassword, CreateUserAction, LoginAction } from "./types";
 import {
   ChangeProfilePasswordValidator,

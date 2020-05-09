@@ -2,8 +2,9 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { PASSWORD_SALT, SESSION_EXPIRY, SESSION_KEY } from "../env";
 import { requestGQL } from "../http-client";
-import { HasuraRole, RequestHeaders, XHasuraRole, XHasuraUserID } from "../types";
+import { HasuraRole, RequestHeaders } from "../types";
 import { UnauthorizedError } from "./types";
+import { XHasuraUserID, XHasuraRole } from "hasura-node-types";
 
 export type UserID = string;
 
