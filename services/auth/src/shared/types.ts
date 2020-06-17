@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable camelcase */
 import { Request } from "express";
