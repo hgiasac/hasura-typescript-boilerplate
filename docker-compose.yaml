@@ -36,7 +36,7 @@ services:
 
   data:
     <<: *common_config
-    image: hasura/graphql-engine:v1.2.1.cli-migrations-v2
+    image: hasura/graphql-engine:v1.2.2.cli-migrations-v2
     volumes:
       - ./services/data/migrations:/hasura-migrations
       - ./services/data/metadata:/hasura-metadata
@@ -53,7 +53,8 @@ services:
       EVENT_TRIGGER_URL: http://events:9000/events
       ACTION_URL: http://actions:9000/actions
       HASURA_GRAPHQL_AUTH_HOOK: http://auth:9000/verify
-      
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+
   auth:
     <<: *common_config
     <<: *api_config
