@@ -2,6 +2,8 @@
 
 ## Boilerplate templates
 
+*NOTE*: These templates are in sample repository. You should checkout which feature you need (JWT, Firebase). `master` branch contains clean structure, so there aren't any migration.
+
 1. Base Project
 - [Backend](https://github.com/hgiasac/hasura-typescript-boilerplate)
 - [React Admin](https://github.com/hgiasac/ra-hasura-typescript-boilerplate)

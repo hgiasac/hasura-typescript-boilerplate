@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable functional/no-class */
@@ -8,6 +10,11 @@ import { ContentType, ContentTypeJson, XHasuraAdminSecret, HasuraActionError } f
 export type MutationResponse<T> = {
   readonly affected_rows: number
   readonly returning: T
+};
+
+export type HasuraGraphQLResponse<T> = {
+  readonly data?: T
+  readonly errors?: T
 };
 
 // common gql error
@@ -59,11 +66,13 @@ export type GQLRequestOptions = {
   readonly headers?: { readonly [key: string]: string }
 };
 
-export const requestGQL = <T = any>(options: GQLRequestOptions): Promise<T> => {
+export const requestGQL = <T extends Record<string, any> = Record<string, any>>(
+  options: GQLRequestOptions
+): Promise<T> => {
   const client = options.isAdmin ? adminClient() : httpClient();
   const url = options.url || DATA_URL;
 
-  return client.post(url, {
+  return client.post<HasuraGraphQLResponse<T>>(url, {
     query: options.query,
     variables: options.variables,
     headers: options.headers
