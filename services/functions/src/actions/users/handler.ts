@@ -94,7 +94,7 @@ export const changeUserPassword: ChangeUserPasswordAction = async (_, payload) =
     throw new HasuraActionError({
       code: VALIDATION_ERROR,
       message: "User not found",
-      details: `User not found: ${value.userId}`
+      details: `User not found: ${value.userId as string}`
     });
   }
 

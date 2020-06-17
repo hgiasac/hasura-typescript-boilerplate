@@ -87,8 +87,12 @@ module.exports = {
             }
         ],
         "@typescript-eslint/camelcase": "off",
-        "@typescript-eslint/class-name-casing": "error",
         "@typescript-eslint/consistent-type-assertions": "off",
+        "@typescript-eslint/no-unsafe-return": "warn",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/restrict-template-expressions": "warn",
+
         "@typescript-eslint/indent": [
             "error",
             2,
@@ -104,7 +108,6 @@ module.exports = {
                 "SwitchCase": 1
             }
         ],
-        "@typescript-eslint/interface-name-prefix": "error",
         "@typescript-eslint/member-delimiter-style": [
             "error",
             {

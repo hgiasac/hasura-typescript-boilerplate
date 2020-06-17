@@ -31,6 +31,6 @@ export type ChangeUserPasswordAction = HasuraActionExpressHandler<
 >;
 
 export type HelloAction = HasuraActionExpressHandler<
-  HasuraActionPayload<{}, typeof HELLO_ACTION>,
+  HasuraActionPayload<Record<string, any>, typeof HELLO_ACTION>,
   { readonly hello: string }
 >;

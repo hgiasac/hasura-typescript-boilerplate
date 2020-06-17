@@ -1,13 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable functional/no-class */
-import Axios from "axios";
+import Axios, { AxiosInstance } from "axios";
 import { DATA_URL, HASURA_GRAPHQL_ADMIN_SECRET } from "./env";
-import { ContentType, ContentTypeJson, XHasuraAdminSecret, HasuraActionError } from "hasura-node-types";
+import {
+  ContentType,
+  ContentTypeJson,
+  XHasuraAdminSecret,
+  HasuraActionError
+} from "hasura-node-types";
 
 export type MutationResponse<T> = {
   readonly affected_rows: number
   readonly returning: T
+};
+
+export type HasuraGraphQLResponse<T> = {
+  readonly data?: T
+  readonly errors?: T
 };
 
 // common gql error
@@ -33,12 +45,12 @@ export class GQLError extends Error {
 }
 
 // http client helpers
-export const adminHttpHeader = () => ({
+export const adminHttpHeader = (): Record<string, string> => ({
   [ContentType]: ContentTypeJson,
   [XHasuraAdminSecret]: HASURA_GRAPHQL_ADMIN_SECRET
 });
 
-export const adminClient = () => Axios.create({
+export const adminClient = (): AxiosInstance => Axios.create({
   headers: adminHttpHeader(),
   timeout: 30
 });
@@ -59,11 +71,13 @@ export type GQLRequestOptions = {
   readonly headers?: { readonly [key: string]: string }
 };
 
-export const requestGQL = <T = any>(options: GQLRequestOptions): Promise<T> => {
+export const requestGQL = <T extends Record<string, any> = Record<string, any>>(
+  options: GQLRequestOptions
+): Promise<T> => {
   const client = options.isAdmin ? adminClient() : httpClient();
   const url = options.url || DATA_URL;
 
-  return client.post(url, {
+  return client.post<HasuraGraphQLResponse<T>>(url, {
     query: options.query,
     variables: options.variables,
     headers: options.headers

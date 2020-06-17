@@ -23,7 +23,7 @@ services:
 
   data:
     <<: *common_config
-    image: hasura/graphql-engine:v1.2.1.cli-migrations-v2
+    image: hasura/graphql-engine:v1.2.2.cli-migrations-v2
     volumes:
       - ./services/data/migrations:/hasura-migrations
       - ./services/data/metadata:/hasura-metadata
@@ -36,6 +36,7 @@ services:
       HASURA_GRAPHQL_MIGRATIONS_DIR: "/hasura-migrations"
       HASURA_GRAPHQL_METADATA_DIR: "/hasura-metadata"
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS256", "jwk_url": "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com", "audience": "${FIREBASE_PROJECT_ID}", "issuer": "https://securetoken.google.com/${FIREBASE_PROJECT_ID}"}'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
 
       
 volumes:

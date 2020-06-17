@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { auth } from "firebase-admin";
 import { getFirebaseApp } from "../components/firebase";
 import { requestGQL } from "../http-client";
