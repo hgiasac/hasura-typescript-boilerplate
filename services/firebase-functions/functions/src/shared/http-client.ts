@@ -35,16 +35,16 @@ export class GQLError extends Error {
 // http client helpers
 export const adminHttpHeader = () => ({
   [ContentType]: ContentTypeJson,
-  [XHasuraAdminSecret]: getConfig().secret.adminSecret
+  [XHasuraAdminSecret]: getConfig().hasura.admin_secret
 });
 
 export const adminClient = () => Axios.create({
   headers: adminHttpHeader(),
-  timeout: 30
+  timeout: 30000
 });
 
 const httpClient = () => Axios.create({
-  timeout: 30,
+  timeout: 30000,
   headers: {
     [ContentType]: ContentTypeJson
   }
@@ -61,7 +61,7 @@ export type GQLRequestOptions = {
 
 export const requestGQL = <T = any>(options: GQLRequestOptions): Promise<T> => {
   const client = options.isAdmin ? adminClient() : httpClient();
-  const url = options.url || getConfig().secret.dataUrl;
+  const url = options.url || getConfig().hasura.url;
 
   return client.post(url, {
     query: options.query,

@@ -53,7 +53,9 @@ export function createFirebaseUser(input: CreateFirebaseUserInput): Promise<auth
       email: input.email,
       emailVerified: input.emailVerified,
       displayName: `${input.firstName} ${input.lastName}`,
-      password: input.password
+      password: input.password,
+      // workaround: onCreate event won't create user customClaims when disabled
+      disabled: true
     });
 }
 

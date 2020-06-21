@@ -10,7 +10,7 @@ provider:
   # https://serverless.com/framework/docs/providers/google/guide/credentials/
   #
   # the path to the credentials file needs to be absolute
-  credentials: ./certs/google-cert.json
+  credentials: ../../certs/google-cert.json
 
 plugins:
   - serverless-google-cloudfunctions
@@ -29,7 +29,7 @@ package:
 
 functions:
   action-users:
-    handler: http
+    handler: actionUsers
     events:
       - http: action-users
       

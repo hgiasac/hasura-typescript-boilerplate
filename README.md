@@ -73,6 +73,40 @@ make down
 docker-compose down --remove-orphans
 ```
 
+## Development
+
+### GraphQL Engine
+
+For hasura instance, you need to deploy using Docker, Kubernetes or Hasura Cloud 
+
+### Firebase Functions
+
+First, you need to set config for projects. Note: firebase config isn't been encrypted. You can use it with care, or use another secret manager services
+
+```
+export GCP_PROJECT=project-name
+export DATA_URL=https://example.com/v1/graphql
+export HASURA_GRAPHQL_ADMIN_SECRET=hasura
+
+sh ./scripts/firebase-config.sh
+
+cd services/firebase-functions/functions
+npm run deploy
+```
+
+### Google Cloud Functions
+
+Environment are stored in `.env.{stage}` at root folder. You need to copy dotenv to corresponding deploy stage (`dev`, `staging`, `prod`)
+
+
+```sh
+
+cd services/functions/users
+npm run deploy:prod
+...
+
+```
+
 ## Advanced guidelines
 
 - [Production checklist](docs/production-checklist)

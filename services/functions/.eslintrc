@@ -11,7 +11,7 @@ https://github.com/typescript-eslint/tslint-to-eslint-config/blob/master/docs/FA
 
 Happy linting! 💖
 */
-module.exports = {
+{
     "env": {
         "node": true
     },
@@ -276,4 +276,4 @@ module.exports = {
         "use-isnan": "error",
         "valid-typeof": "off"
     }
-};
+}
