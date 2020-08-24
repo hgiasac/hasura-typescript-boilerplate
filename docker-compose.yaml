@@ -50,7 +50,7 @@ services:
       EVENT_TRIGGER_URL: http://events:9000/events
       ACTION_URL: http://actions:9000/actions
       HASURA_GRAPHQL_AUTH_HOOK: http://auth:9000/verify
-      
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
   auth:
     <<: *common_config
     <<: *api_config
