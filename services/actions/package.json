@@ -71,17 +71,5 @@
     "testPathIgnorePatterns": [
       "common.ts"
     ]
-  },
-  "nodemonConfig": {
-    "exec": "npm run lint && ts-node src/index.ts",
-    "watch": [
-      "src/**/*.ts"
-    ],
-    "ignore": [
-      "docs/*",
-      ".git"
-    ],
-    "ext": "ts,json",
-    "delay": "1000"
   }
 }
