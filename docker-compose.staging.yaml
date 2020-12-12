@@ -18,10 +18,10 @@ services:
   data:
     environment:
       HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       
   events:
     <<: *common_config
 
   actions:
     <<: *common_config
-

@@ -13,6 +13,7 @@ services:
   data:
     environment:
       HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       
   events:
     build: 
