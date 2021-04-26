@@ -5,13 +5,13 @@
 *NOTE*: These templates are in sample repository. You should checkout which feature you need (JWT, Firebase). `master` branch contains clean structure, so there aren't any migration.
 
 1. Base Project
-- [Backend](https://github.com/hgiasac/hasura-typescript-boilerplate)
+- [Backend - Hasura v1.3.3](https://github.com/hgiasac/hasura-typescript-boilerplate) or [Hasura 2.0](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/master-v2.0)
 - [React Admin](https://github.com/hgiasac/ra-hasura-typescript-boilerplate)
 - [Next.js](https://github.com/hgiasac/hasura-next-ts-boilerplate)
 - [Next.js + Tailwind](https://github.com/hgiasac/hasura-next-ts-boilerplate/tree/tailwind)
 
 2. JWT Authentication
-- [Backend](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-jwt)
+- [Backend - Hasura v1.3.3](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-jwt)  or [Hasura 2.0](https://github.com/hgiasac/hasura-typescript-boilerplate/tree/auth-jwt-v2.0)
 - [React Admin](https://github.com/hgiasac/ra-hasura-typescript-boilerplate/tree/auth-jwt)
 - [Next.js + Tailwind](https://github.com/hgiasac/hasura-next-ts-boilerplate/tree/tailwind)
 
