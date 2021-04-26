@@ -1,0 +1,11 @@
+table:
+  name: status
+  schema: public
+select_permissions:
+- role: user
+  permission:
+    columns:
+    - id
+    - description
+    filter: {}
+    allow_aggregations: true

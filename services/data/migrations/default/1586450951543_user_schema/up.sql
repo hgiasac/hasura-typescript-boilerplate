@@ -53,6 +53,3 @@ IS 'trigger to set value of column "updated_at" to current timestamp on row upda
 
 CREATE VIEW public.me AS
     SELECT * FROM users;
-
-CREATE VIEW public.roles AS
-    select role_name as "roleName" from hdb_catalog.hdb_role;

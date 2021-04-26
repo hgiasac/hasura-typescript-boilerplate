@@ -33,7 +33,7 @@ services:
 
   data:
     <<: *common_config
-    image: hasura/graphql-engine:v1.3.3.cli-migrations-v2
+    image: hasura/graphql-engine:v2.0.0-alpha.9.cli-migrations-v3
     volumes:
       - ./services/data/migrations:/hasura-migrations
       - ./services/data/metadata:/hasura-metadata
@@ -52,6 +52,8 @@ services:
       ACTION_URL: http://actions:9000/actions
       HASURA_GRAPHQL_AUTH_HOOK: http://auth:9000/verify
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      # uncomment if you like to store metadata in separate Database
+      # HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://<user>:<password>@<host>:<port>/<metadata-db-name>
   auth:
     <<: *common_config
     <<: *api_config
