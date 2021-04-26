@@ -2,6 +2,10 @@
 
 ## Boilerplate templates
 
+This is project template for Hasura v2.0 that is in beta stage. Use at your risk.
+
+The auto-migration and CLI are v3. You need to download directly from [Github releases page](https://github.com/hasura/graphql-engine/releases) 
+
 *NOTE*: These templates are in sample repository. You should checkout which feature you need (JWT, Firebase). `master` branch contains clean structure, so there aren't any migration.
 
 1. Base Project
