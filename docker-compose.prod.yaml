@@ -5,7 +5,7 @@ x-refs:
   common_config: &common_config
     logging:
       driver: gcplogs
-      options: 
+      options:
         gcp-project: ${GCP_PROJECT}
 
   api_config: &api_config
@@ -25,7 +25,7 @@ services:
   data:
     environment:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
-      
+
   events:
     <<: *common_config
     <<: *api_config

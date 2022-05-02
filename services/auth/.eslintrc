@@ -54,7 +54,9 @@ Happy linting! 💖
         "functional/no-throw-statement": 0,
         "functional/no-expression-statement": 0,
         "functional/no-conditional-statement": 0,
+        "@typescript-eslint/prefer-readonly-parameter-types": 0,
         "@typescript-eslint/adjacent-overload-signatures": "error",
+        "import/no-named-as-default": 0,
         "@typescript-eslint/array-type": [
             "error",
             {

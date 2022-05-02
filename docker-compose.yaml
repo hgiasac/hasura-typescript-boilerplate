@@ -21,7 +21,7 @@ services:
 
   postgres:
     restart: always
-    image: postgres:12
+    image: postgres:14
     volumes:
     - db_data:/var/lib/postgresql/data
     ports:
@@ -33,7 +33,7 @@ services:
 
   data:
     <<: *common_config
-    image: hasura/graphql-engine:v2.0.0-alpha.9.cli-migrations-v3
+    image: hasura/graphql-engine:v2.6.0.cli-migrations-v3
     volumes:
       - ./services/data/migrations:/hasura-migrations
       - ./services/data/metadata:/hasura-metadata

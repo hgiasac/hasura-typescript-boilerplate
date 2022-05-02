@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 RUN npm config set unsafe-perm true 
 COPY package.json package-lock.json tsconfig.json nodemon.json .eslintrc ./
 RUN npm i -g nodemon typescript @types/node eslint eslint-plugin-import ts-node
-RUN npm i
+RUN npm i --force
 
 EXPOSE 9000
 
