@@ -6,7 +6,7 @@ COPY .eslintrc package.json package-lock.json tsconfig.json src ./
 COPY src src
 
 RUN npm config set unsafe-perm true 
-RUN npm install 
+RUN npm i --force
 
 # build app
 RUN npm run build

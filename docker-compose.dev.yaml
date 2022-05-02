@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   auth:
-    build: 
+    build:
       context: ./services/auth
       dockerfile: Dockerfile_dev
       network: host
@@ -14,9 +14,9 @@ services:
     environment:
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      
+
   events:
-    build: 
+    build:
       context: ./services/events
       dockerfile: Dockerfile_dev
       network: host
@@ -24,7 +24,7 @@ services:
       - ./services/events/src:/usr/src/app/src
 
   actions:
-    build: 
+    build:
       context: ./services/actions
       dockerfile: Dockerfile_dev
       network: host
